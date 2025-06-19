@@ -5,7 +5,7 @@ import models.Session;
 import repository.RoomRepository;
 import services.RoomService;
 
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Classe de controle para a lógica de negócio das salas que já se inicia com 5 salas cadastradas.
@@ -20,7 +20,7 @@ public class RoomController {
     /**
      * Pega todas as salas cadastradas.
      */
-    public static List<Room> getAllRooms() {
+    public static LinkedList<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
 

@@ -53,7 +53,7 @@ public class RoomService {
      *
      * @return Lista de todas as salas.
      */
-    public List<Room> getAllRooms(){
+    public LinkedList<Room> getAllRooms(){
         return roomRepository.getAll();
     }
 
