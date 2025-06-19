@@ -30,7 +30,6 @@ import javafx.scene.control.TableCell;
 import java.time.format.DateTimeParseException;
 import javafx.stage.Stage;
 import controller.viewcontroller.PopUpSessionController;
-import structures.list.GenericDynamicList; 
 import java.util.stream.Collectors;
 
 /**
@@ -151,7 +150,7 @@ public class SessionControlController implements Initializable, MainViews.OnChan
         });
 
         MainViews.addOnChangeScreenListener(this);
-        GenericDynamicList<Session> tempGenericList = SessionController.getAllSessions();
+        List<Session> tempGenericList = SessionController.getAllSessions();
         if (tempGenericList != null) {
             this.allSessions = new ArrayList<>();
             for (Session session : tempGenericList) {
@@ -184,7 +183,7 @@ public class SessionControlController implements Initializable, MainViews.OnChan
         selectedSessions.clear();
         sessionsForTable.clear();
 
-        GenericDynamicList<Session> currentSessionsFromRepo = SessionController.getAllSessions();
+        List<Session> currentSessionsFromRepo = SessionController.getAllSessions();
 
         if (currentSessionsFromRepo != null) {
             for (Session session : currentSessionsFromRepo) {

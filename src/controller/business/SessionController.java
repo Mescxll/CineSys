@@ -10,7 +10,6 @@ import models.Room;
 import models.Session;
 import repository.SessionRepository;
 import services.SessionService;
-import structures.list.GenericDynamicList;
 
 /**
  * Classe de controle responsável pela lógica de negócio das sessões de cinema.

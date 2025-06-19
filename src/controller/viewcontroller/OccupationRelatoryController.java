@@ -29,7 +29,6 @@ import javafx.scene.text.TextFlow;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Font;
 import models.*;
-import structures.list.GenericDynamicList;
 
 /**
  * Classe responsável por controlar a tela de relatório de ocupação de salas.
@@ -348,7 +347,7 @@ public class OccupationRelatoryController implements Initializable {
      */
     private void displaySessionsForMovie(Movie movie, VBox container) {
         container.getChildren().clear(); // Limpa a lista de sessões anterior
-        GenericDynamicList<Session> sessoesDoFilme = MovieController.getSessionsByMovie(movie.getId());
+        List<Session> sessoesDoFilme = MovieController.getSessionsByMovie(movie.getId());
 
         // Verifica se a busca retornou alguma sessão
         if (sessoesDoFilme == null || sessoesDoFilme.isEmpty()) {

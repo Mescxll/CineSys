@@ -48,7 +48,7 @@ public class RoomRepository {
      *
      * @return Um ArrayDeque contendo todas as salas.
      */
-    public LinkedList<Room> getAll(){
+    public List<Room> getAll(){
         return (LinkedList<Room>) rooms;
     }
 

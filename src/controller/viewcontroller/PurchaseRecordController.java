@@ -6,7 +6,6 @@ import controller.business.TicketController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import structures.list.GenericDynamicList;
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import controller.viewcontroller.PopUpTicketCanceledController;
+import java.util.List;
 
 
 /**
@@ -96,7 +96,7 @@ public class PurchaseRecordController implements Initializable {
         labelSession.setText(ticket.getSession().getDate() + " às " + ticket.getSession().getTime() + " (Sala " + ticket.getSession().getRoom().getId() + ")");
         labelPagamento.setText(ticket.getPaymentMethod().toString());
         
-        GenericDynamicList<Ticket> list = ticket.getClient().getPurchasingHistory();
+        List<Ticket> list = ticket.getClient().getPurchasingHistory();
         int tickets = 0;
         for(Ticket tck : list){
             if(ticket.getId() == tck.getId()){
