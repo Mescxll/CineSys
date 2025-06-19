@@ -7,7 +7,8 @@ import models.Client;
 import models.Session;
 import models.Ticket;
 import repository.TicketRepository;
-import structures.list.GenericDynamicList;
+
+import java.util.LinkedList;
 
 /**
  *
@@ -36,7 +37,7 @@ public class TicketService {
      *
      * @return Uma lista dinâmica contendo todos os tickets.
      */
-    public GenericDynamicList<Ticket> getAllTickets(){
+    public LinkedList<Ticket> getAllTickets(){
         return ticketRepository.getAll();
     }
 
