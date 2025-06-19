@@ -20,7 +20,7 @@ public class RoomController {
     /**
      * Pega todas as salas cadastradas.
      */
-    public static ArrayDeque<Room> getAllRooms() {
+    public static List<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
 
