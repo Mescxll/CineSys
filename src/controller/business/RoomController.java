@@ -6,7 +6,6 @@ import repository.RoomRepository;
 import services.RoomService;
 
 import java.util.List;
-import java.util.LinkedList;
 
 /**
  * Classe de controle para a lógica de negócio das salas que já se inicia com 5 salas cadastradas.
