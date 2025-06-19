@@ -4,7 +4,8 @@ import models.Movie;
 import models.Session;
 import repository.MovieRepository;
 import services.MovieService;
-import structures.list.GenericDynamicList;
+
+import java.util.LinkedList;
 
 /**
  * Classe de controle para a lógica de negócio dos filmes.
@@ -47,7 +48,7 @@ public class MovieController {
      * Pega todos os filmes cadastrados.
      * @return Lista de filmes.
      */
-    public static GenericDynamicList<Movie> getAllMovies(){
+    public static LinkedList<Movie> getAllMovies(){
         return movieService.getAllMovies();
     }
 
@@ -85,7 +86,7 @@ public class MovieController {
      * @param id id do filme a ser pesquisado
      * @return lista de sessões que irão passar o filme fornecido
      */
-    public static GenericDynamicList<Session> getSessionsByMovie(int id) {
+    public static LinkedList<Session> getSessionsByMovie(int id) {
         return movieService.getSessionsByMovie(id);
     }
 
