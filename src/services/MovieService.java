@@ -4,7 +4,8 @@ import controller.business.SessionController;
 import models.Movie;
 import models.Session;
 import repository.MovieRepository;
-import structures.list.GenericDynamicList;
+
+import java.util.List;
 
 /**
  * Classe Service responsável pela lógica denegícios relacionada a filmes.
@@ -40,7 +41,7 @@ public class MovieService {
         }
 
         //Verifica se já existe um filme com o mesmo título
-        GenericDynamicList<Movie> existingMovies = movieRepository.getAll();
+        List<Movie> existingMovies = movieRepository.getAll();
         for (int i = 0; i < existingMovies.size(); i++) {
             if (existingMovies.get(i).getTitle().equalsIgnoreCase(title)) {
                 return "Filme não foi adicionado."; //Indica filme duplicado
