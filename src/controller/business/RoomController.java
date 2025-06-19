@@ -5,7 +5,6 @@ import models.Session;
 import repository.RoomRepository;
 import services.RoomService;
 
-import java.util.List;
 import java.util.LinkedList;
 
 /**
@@ -21,7 +20,7 @@ public class RoomController {
     /**
      * Pega todas as salas cadastradas.
      */
-    public static ArrayDeque<Room> getAllRooms() {
+    public static LinkedList<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
 
