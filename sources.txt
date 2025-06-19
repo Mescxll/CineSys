@@ -16,7 +16,6 @@ src/controller/viewcontroller/ClientHistoryController.java
 src/controller/viewcontroller/PopUpRegisteredSaleController.java
 src/controller/viewcontroller/PopUpClientController.java
 src/controller/viewcontroller/RegisterSessionController.java
-src/controller/viewcontroller/PayPerSessionController.java
 src/controller/viewcontroller/MovieControlController.java
 src/controller/viewcontroller/EditMovieController.java
 src/controller/viewcontroller/MainViews.java
@@ -39,11 +38,6 @@ src/repository/TicketRepository.java
 src/repository/ClientRepository.java
 src/repository/MovieRepository.java
 src/enums/PaymentMethod.java
-src/structures/queue/GenericDynamicQueue.java
-src/structures/queue/Queueable.java
-src/structures/list/GenericDynamicList.java
-src/structures/list/Node.java
-src/structures/list/Listable.java
 src/services/MovieService.java
 src/services/TicketService.java
 src/services/SessionService.java
