@@ -5,6 +5,7 @@ import models.Session;
 import repository.RoomRepository;
 import java.util.List;
 
+import java.util.LinkedList;
 
 /**
  * Classe de serviço responsável pela lógica de negócios
