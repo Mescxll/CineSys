@@ -3,6 +3,7 @@ package controller.business;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 
 import models.Movie;
 import models.Room;
@@ -78,7 +79,7 @@ public class SessionController {
      * Pega todas as sessões cadastradas no sistema.
      * @return Uma lista de todas as sessões.
      */
-    public static GenericDynamicList<Session> getAllSessions(){
+    public static LinkedList<Session> getAllSessions(){
         return sessionService.getAllSessions();
     }
 

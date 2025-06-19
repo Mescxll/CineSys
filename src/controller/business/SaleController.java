@@ -1,6 +1,7 @@
 package controller.business;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import enums.PaymentMethod;
@@ -27,13 +28,13 @@ public class SaleController {
      * @return Lista com todos os tickets gerados
      * @throws Exception se não houver assentos ou ocorrer erro na geração de algum ticket
      */
-    public static List<Ticket> processSale(Client client, Session session, int quantity, PaymentMethod paymentMethod) throws Exception {
+    public static ArrayList<Ticket> processSale(Client client, Session session, int quantity, PaymentMethod paymentMethod) throws Exception {
 
         if (session.getTotalAvailableSeats() < quantity) {
             throw new IllegalArgumentException("Venda excedida: não há assentos suficientes.");
         }
 
-        List<Ticket> tickets = new ArrayList<>();
+        ArrayList<Ticket> tickets = new ArrayList<>();
 
         for (int i = 0; i < quantity; i++) {
             Ticket ticket = TicketController.purchaseTicket(

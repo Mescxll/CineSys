@@ -4,7 +4,6 @@ import models.Room;
 import models.Session;
 import repository.RoomRepository;
 import services.RoomService;
-import structures.list.GenericDynamicList;
 
 import java.util.ArrayDeque;
 
