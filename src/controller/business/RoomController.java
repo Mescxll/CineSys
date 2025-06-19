@@ -4,7 +4,8 @@ import models.Room;
 import models.Session;
 import repository.RoomRepository;
 import services.RoomService;
-import structures.list.GenericDynamicList;
+
+import java.util.ArrayDeque;
 
 /**
  * Classe de controle para a lógica de negócio das salas que já se inicia com 5 salas cadastradas.
@@ -19,7 +20,7 @@ public class RoomController {
     /**
      * Pega todas as salas cadastradas.
      */
-    public static GenericDynamicList<Room> getAllRooms() {
+    public static ArrayDeque<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
 

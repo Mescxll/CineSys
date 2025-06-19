@@ -4,7 +4,9 @@ import controller.business.SessionController;
 import models.Movie;
 import models.Session;
 import repository.MovieRepository;
-import structures.list.GenericDynamicList;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Classe Service responsável pela lógica denegícios relacionada a filmes.
@@ -40,7 +42,7 @@ public class MovieService {
         }
 
         //Verifica se já existe um filme com o mesmo título
-        GenericDynamicList<Movie> existingMovies = movieRepository.getAll();
+        List<Movie> existingMovies = movieRepository.getAll();
         for (int i = 0; i < existingMovies.size(); i++) {
             if (existingMovies.get(i).getTitle().equalsIgnoreCase(title)) {
                 return "Filme não foi adicionado."; //Indica filme duplicado
@@ -90,7 +92,7 @@ public class MovieService {
      *
      * @return Lista de filmes.
      */
-    public GenericDynamicList<Movie> getAllMovies() {
+    public LinkedList<Movie> getAllMovies() {
         return movieRepository.getAll();
     }
 
@@ -151,16 +153,16 @@ public class MovieService {
      * @param id id do filme a ser pesquisado
      * @return lista de sessões que irão passar o filme fornecido
      */
-    public GenericDynamicList<Session> getSessionsByMovie(int id) {
+    public LinkedList<Session> getSessionsByMovie(int id) {
         Movie movie = getMovieById(id);
         if (movie == null)
             throw new IllegalAccessError("O id do filme não existe!");
-        GenericDynamicList<Session> sessions = SessionController.getAllSessions();
-        GenericDynamicList<Session> sessionsWithMovie = new GenericDynamicList<>();
+        List<Session> sessions = SessionController.getAllSessions();
+        LinkedList<Session> sessionsWithMovie = new LinkedList<>();
         for (Session session : sessions) {
             try {
                 if (session.getMovie() == movie) {
-                    sessionsWithMovie.append(session);
+                    sessionsWithMovie.add(session);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());

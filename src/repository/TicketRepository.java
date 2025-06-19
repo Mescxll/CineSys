@@ -1,7 +1,9 @@
 package repository;
 
 import models.Ticket;
-import structures.list.GenericDynamicList;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Repositório para gerenciar os dados dos tickets.
@@ -12,7 +14,7 @@ import structures.list.GenericDynamicList;
  * @version 2.0
  */
 public class TicketRepository {
-    private GenericDynamicList<Ticket> tickets = new GenericDynamicList<>();
+    private List<Ticket> tickets = new LinkedList<>();
 
     /**
      * Adiciona um ticket ao repositório.
@@ -21,7 +23,7 @@ public class TicketRepository {
      */
     public void add(Ticket ticket){
         try {
-            tickets.append(ticket);
+            tickets.add(ticket);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +53,7 @@ public class TicketRepository {
     public void update(int id, Ticket ticket){
         if(getById(id) == null)
             throw new IllegalArgumentException("Sessão não existe!");
-        tickets.update(getIndex(id), ticket);
+        tickets.set(getIndex(id), ticket);
     }
 
     /**
@@ -75,8 +77,8 @@ public class TicketRepository {
      *
      * @return Uma lista dinâmica contendo todos os tickets.
      */
-    public GenericDynamicList<Ticket> getAll(){
-        return tickets;
+    public LinkedList<Ticket> getAll(){
+        return (LinkedList<Ticket>) tickets;
     }
 
     /**

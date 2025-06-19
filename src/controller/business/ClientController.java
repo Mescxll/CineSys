@@ -4,7 +4,8 @@ import models.Client;
 import models.Ticket;
 import repository.ClientRepository;
 import services.ClientService;
-import structures.list.GenericDynamicList;
+
+import java.util.LinkedList;
 
 /**
  * Classe de controle para a lógica de negócio dos clientes.
@@ -71,7 +72,7 @@ public class ClientController {
      * Retorna uma lista com todos os clientes cadastrados chamando o método getAllClients da classe ClientService.
      * @return lista com todos os clientes cadastrados.
      */
-    public static GenericDynamicList<Client> getAllClients(){
+    public static LinkedList<Client> getAllClients(){
         return clientService.getAllClients();
     }
  
@@ -80,7 +81,7 @@ public class ClientController {
      * @param clientId ID do cliente.
      * @return Histórico de compras do cliente.
      */
-    public static GenericDynamicList<Ticket> getClientHistory(int clientId) {
+    public static LinkedList<Ticket> getClientHistory(int clientId) {
         return clientService.getClientHistory(clientId);
     }
 

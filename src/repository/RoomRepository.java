@@ -1,17 +1,19 @@
 package repository;
 
 import models.Room;
-import structures.list.GenericDynamicList;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Classe que gerencia as salas (Rooms) do cinema.
- * Usamos uma GenericDynamicList como "banco de dados" de salas.
+ * Usamos uma LinkedList como "banco de dados" de salas.
  * @author Thiago Ferreira Ribeiro
  * @since 11/06/2025
  * @version 1.0
  */
 public class RoomRepository {
-    private GenericDynamicList<Room> rooms = new GenericDynamicList<>();
+    private List<Room> rooms = new LinkedList<>();
 
     /**
      * Adiciona uma nova sala a lista.
@@ -20,7 +22,7 @@ public class RoomRepository {
      */
     public void add(Room room){
         try {
-            rooms.append(room);
+            rooms.add(room);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,10 +46,10 @@ public class RoomRepository {
     /**
      * Retorna todas as salas cadastradas.
      *
-     * @return A GenericDynamicList contendo todas as salas.
+     * @return Um ArrayDeque contendo todas as salas.
      */
-    public GenericDynamicList<Room> getAll(){
-        return rooms;
+    public LinkedList<Room> getAll(){
+        return (LinkedList<Room>) rooms;
     }
 
     /**
@@ -69,4 +71,5 @@ public class RoomRepository {
         }
         return false;
     }
+
 }

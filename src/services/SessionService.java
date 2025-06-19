@@ -2,14 +2,14 @@ package services;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
-import controller.business.RoomController;
 import models.Movie;
 import models.Room;
 import models.Session;
 import repository.SessionRepository;
-import structures.list.GenericDynamicList;
 
 /**
  * Classe de serviço responsável pela lógica de negócio das sessões de cinema.
@@ -65,7 +65,7 @@ public class SessionService {
         Session newSession = new Session(date, time, room, movie, ticketValue);
 
         // Verifica se já existe uma sessão com horário conflitante na mesma sala        
-        GenericDynamicList<Session> sessionsInRoom = sessionRepository.getAll();
+        List<Session> sessionsInRoom = sessionRepository.getAll();
         for(int i = 0; i < sessionsInRoom.size(); i++){
             if( sessionsInRoom.get(i).getDate().equals(newSession.getDate()) &&
                 sessionsInRoom.get(i).getTime().equals(newSession.getTime())){
@@ -120,7 +120,7 @@ public class SessionService {
         Session newSession = new Session(date, time, room, movie, ticketValue, totalAvailableSeats);
 
         // Verifica se já existe uma sessão com horário conflitante na mesma sala
-        GenericDynamicList<Session> sessionsInRoom = sessionRepository.getAll();
+        List<Session> sessionsInRoom = sessionRepository.getAll();
         for(int i = 0; i < sessionsInRoom.size(); i++){
             if( sessionsInRoom.get(i).getDate().equals(newSession.getDate()) &&
                     sessionsInRoom.get(i).getTime().equals(newSession.getTime())){
@@ -188,9 +188,9 @@ public class SessionService {
     /**
      * Retorna todas as sessões cadastradas sem filtro.
      *
-     * @return Uma GenericDynamicList contendo todas as sessões.
+     * @return Uma LinkedList contendo todas as sessões.
      */
-    public GenericDynamicList<Session> getAllSessions(){
+    public LinkedList<Session> getAllSessions(){
         return sessionRepository.getAll();
     }
 
@@ -198,9 +198,9 @@ public class SessionService {
      * Retorna todas as sessões agendadas para uma dada data.
      *
      * @param date Data para filtrar as sessões.
-     * @return Uma GenericDynamicList contendo as sessões cuja data coincide com a informada.
+     * @return Uma LinkedList contendo as sessões cuja data coincide com a informada.
      */
-    public GenericDynamicList<Session> getSessionsByDate(LocalDate date){
+    public LinkedList<Session> getSessionsByDate(LocalDate date){
         return sessionRepository.getByDate(date);
     }
     

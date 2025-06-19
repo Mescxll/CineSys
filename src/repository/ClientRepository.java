@@ -1,7 +1,9 @@
 package repository;
 
 import models.Client;
-import structures.list.GenericDynamicList;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Classe que gerencia a coleção de clientes.
@@ -11,7 +13,7 @@ import structures.list.GenericDynamicList;
  * @version 2.0
  */
 public class ClientRepository {
-    private GenericDynamicList<Client> clients = new GenericDynamicList<>();
+    private List<Client> clients = new LinkedList<>();
 
     /**
      * Adiciona um cliente ao repositório.
@@ -20,7 +22,7 @@ public class ClientRepository {
      */
     public void add(Client client){
         try {
-            clients.append(client);
+            clients.add(client);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +52,7 @@ public class ClientRepository {
     public void update(int id, Client client){
         if(getById(id) == null)
             throw new IllegalArgumentException("Cliente não existe!");
-        clients.update(getIndex(id), client);
+        clients.set(getIndex(id), client);
     }
 
     /**
@@ -72,10 +74,10 @@ public class ClientRepository {
     /**
      * Retorna todos os clientes cadastrados.
      *
-     * @return Uma GenericDynamicList de clientes.
+     * @return Uma LinkedList de clientes.
      */
-    public GenericDynamicList<Client> getAll(){
-        return clients;
+    public LinkedList<Client> getAll(){
+        return (LinkedList<Client>) clients;
     }
 
     /**

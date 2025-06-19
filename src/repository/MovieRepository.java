@@ -1,18 +1,20 @@
 package repository;
 
 import models.Movie;
-import structures.list.GenericDynamicList;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Classe que manipula diretamente a lista de filmes.
- * Utiliza a estrutura GenericDynamicList como um banco de dados para armazenar os filmes.
+ * Utiliza a estrutura LinkedList como um banco de dados para armazenar os filmes.
  * @author Vinícius Nunes de Andrade
  * @author Thiago Ferreira Ribeiro
  * @since 11/06/2025
  * @version 2.0
  */
 public class MovieRepository {
-    private GenericDynamicList<Movie> movies = new GenericDynamicList<>();
+    private List<Movie> movies = new LinkedList<>();
     
     /**
      * Adiciona um filme à lista de filmes
@@ -21,7 +23,7 @@ public class MovieRepository {
      */
     public void add(Movie movie){
         try {
-            movies.append(movie);
+            movies.add(movie);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +53,7 @@ public class MovieRepository {
     public void update(int id, Movie movie){
         if(getById(id) == null)
             throw new IllegalArgumentException("Sessão não existe!");
-        movies.update(getIndex(id), movie);
+        movies.set(getIndex(id), movie);
     }
 
     /**
@@ -75,8 +77,8 @@ public class MovieRepository {
      * 
      * @return Uma lista contendo todos os filmes.
      */
-    public GenericDynamicList<Movie> getAll(){
-        return movies;
+    public LinkedList<Movie> getAll(){
+        return (LinkedList<Movie>) movies;
     }
 
     /**
