@@ -4,7 +4,7 @@ import models.Room;
 import models.Session;
 import repository.RoomRepository;
 
-import java.util.ArrayDeque;
+import java.util.LinkedList;
 
 /**
  * Classe de serviço responsável pela lógica de negócios
@@ -52,7 +52,7 @@ public class RoomService {
      *
      * @return Lista de todas as salas.
      */
-    public ArrayDeque<Room> getAllRooms(){
+    public LinkedList<Room> getAllRooms(){
         return roomRepository.getAll();
     }
 

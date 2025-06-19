@@ -6,6 +6,7 @@ import repository.RoomRepository;
 import services.RoomService;
 
 import java.util.ArrayDeque;
+import java.util.LinkedList;
 
 /**
  * Classe de controle para a lógica de negócio das salas que já se inicia com 5 salas cadastradas.
@@ -20,7 +21,7 @@ public class RoomController {
     /**
      * Pega todas as salas cadastradas.
      */
-    public static ArrayDeque<Room> getAllRooms() {
+    public static LinkedList<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
 
