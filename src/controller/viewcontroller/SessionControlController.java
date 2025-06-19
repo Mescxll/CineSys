@@ -285,15 +285,6 @@ public class SessionControlController implements Initializable, MainViews.OnChan
         MainViews.changeScreen("sellTicket", sessaoParaVenda);
     }
 
-    @FXML
-    void openRelatory(ActionEvent event) {
-        if (selectedSessions.isEmpty() || selectedSessions.size() > 1) {
-            return;
-        }
-        Session sessionRelatory = selectedSessions.get(0);
-        // MainViews.changeScreen("", sessionRelatory);
-    }
-
     /**
      * Método que abre a Tela Principal.
      *

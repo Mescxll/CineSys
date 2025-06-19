@@ -24,7 +24,6 @@ public class MainViews extends Application {
     private static Scene movieControlScene;
     private static Scene movieEditScene;
     private static Scene occupationRelatoryScene;
-    private static Scene payPerSessionScene;
     private static Scene popUpClientScene;
     private static Scene popUpMoviesScene;
     private static Scene purchaseRecordScene;
@@ -69,7 +68,6 @@ public class MainViews extends Application {
         FXMLLoader loaderPurchaseRecord = new FXMLLoader(getClass().getResource("/gui/PurchaseRecord.fxml"));
         FXMLLoader loaderSellTicket = new FXMLLoader(getClass().getResource("/gui/SellTicket.fxml"));
         FXMLLoader loaderSessionControl = new FXMLLoader(getClass().getResource("/gui/SessionControl.fxml"));
-        FXMLLoader loaderPayPerSession = new FXMLLoader(getClass().getResource("/gui/PayPerSession.fxml"));
         FXMLLoader loaderUpdateSession = new FXMLLoader(getClass().getResource("/gui/UpdateSession.fxml"));
         FXMLLoader loaderPopUpRegisteredSale = new FXMLLoader(getClass().getResource("/gui/PopUpRegisteredSale.fxml"));
         FXMLLoader loaderPopUpDiscount = new FXMLLoader(getClass().getResource("/gui/PopUpDiscount.fxml"));
@@ -126,9 +124,6 @@ public class MainViews extends Application {
 
         Parent sessionControl = loaderSessionControl.load();
         sessionControlScene = new Scene(sessionControl);
-
-        Parent payPerSession = loaderPayPerSession.load();
-        payPerSessionScene = new Scene(payPerSession);
 
         Parent updateSession = loaderUpdateSession.load();
         updateSessionScene = new Scene(updateSession);
@@ -227,10 +222,6 @@ public class MainViews extends Application {
             case "sessionControl":
                 stage.setScene(sessionControlScene);
                 notifyAllListerners("sessionControl", userDataObject);
-                break;
-            case "payPerSession":
-                stage.setScene(payPerSessionScene);
-                notifyAllListerners("payPerSession", userDataObject);
                 break;
             case "updateSession":
                 stage.setScene(updateSessionScene);
