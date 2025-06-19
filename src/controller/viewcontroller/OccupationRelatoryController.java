@@ -127,7 +127,6 @@ public class OccupationRelatoryController implements Initializable {
     public void addFilter() {
         filter.clear(); // Limpa a lista para evitar duplicatas se o método for chamado novamente
         filter.add("Filme");
-        filter.add("Data");
         filter.add("Horário de Sessão");
 
         items = FXCollections.observableArrayList(filter);
@@ -202,81 +201,6 @@ public class OccupationRelatoryController implements Initializable {
                         filterContainer.getChildren().add(textFlow);
                         System.out.println("Resumo do filme '" + movie.getTitle() + "' adicionado.");
                     });
-        } else if ("Data".equals(selected)) {
-            // --- Criação das Abas de Filtro de Data ---
-            HBox tabs = new HBox(10); // HBox para agrupar os botões de data
-            tabs.setPadding(new Insets(10, 0, 10, 0));
-
-            Button hojeBtn = new Button("Hoje");
-            Button semanaBtn = new Button("Esta semana");
-            Button mesBtn = new Button("Este mês");
-            Button anoBtn = new Button("Este ano");
-
-            // Agrupa os botões em uma lista para facilitar a manipulação dos estilos
-            List<Button> tabButtons = List.of(hojeBtn, semanaBtn, mesBtn, anoBtn);
-
-            // Define os estilos para os estados ativo e inativo
-            String activeTabStyle = "-fx-background-color: #af0e2c; -fx-text-fill: #f2e8c6; -fx-background-radius: 5; -fx-font-size: 18px;";
-            String inactiveTabStyle = "-fx-background-color: transparent; -fx-text-fill: #f2e8c6; -fx-font-size: 16px;";
-
-            // Define o estado inicial (ex: "Hoje" começa ativo)
-            hojeBtn.setStyle(activeTabStyle);
-            semanaBtn.setStyle(inactiveTabStyle);
-            mesBtn.setStyle(inactiveTabStyle);
-            anoBtn.setStyle(inactiveTabStyle);
-
-            // --- Criação da Caixa Vermelha com o Resultado ---
-            VBox redBox = new VBox(10);
-            redBox.setPadding(new Insets(10));
-            redBox.setStyle("-fx-background-color: #af0e2c; -fx-background-radius: 10;");
-
-            Text boldText = new Text("Ocupação média (todas as sessões): ");
-            boldText.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-            boldText.setFill(javafx.scene.paint.Color.web("#f2e8c6"));
-
-            double ocupacaoInicial = calcularOcupacaoPara("Hoje"); // Calcula para 'Hoje' (o botão inicial)
-            Text ocupacaoText = new Text(String.format("%.1f", ocupacaoInicial) + "%");
-            ocupacaoText.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-            ocupacaoText.setFill(javafx.scene.paint.Color.web("#f2e8c6"));
-
-            TextFlow textFlow = new TextFlow(boldText, ocupacaoText);
-            redBox.getChildren().add(textFlow);
-
-            // --- Adiciona ação para os botões (usa a redBox que já existe) ---
-            for (Button btn : tabButtons) {
-                btn.setOnAction(event -> {
-                    // Atualiza o estilo dos botões
-                    for (Button b : tabButtons) {
-                        b.setStyle(inactiveTabStyle);
-                    }
-                    btn.setStyle(activeTabStyle);
-                    btn.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
-                    // Calcular a ocupação com base no botão clicado
-                    String filtroSelecionado = btn.getText();
-                    double ocupacaoCalculada = calcularOcupacaoPara(filtroSelecionado);
-
-                    // Atualizar caixa de resultado (redBox)
-                    redBox.getChildren().clear();
-                    Text boldTextNovo = new Text("Ocupação média (todas as sessões): ");
-                    boldTextNovo.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-                    boldTextNovo.setFill(javafx.scene.paint.Color.web("#f2e8c6"));
-
-                    Text ocupacaoTextNova = new Text(String.format("%.1f", ocupacaoCalculada) + "%");
-                    ocupacaoTextNova.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-                    ocupacaoTextNova.setFill(javafx.scene.paint.Color.web("#f2e8c6"));
-
-                    TextFlow textFlowNovo = new TextFlow(boldTextNovo, ocupacaoTextNova);
-                    redBox.getChildren().add(textFlowNovo);
-
-                    System.out.println("Filtro aplicado: " + filtroSelecionado + " | Ocupação média: " + ocupacaoCalculada + "%");
-                });
-            }
-
-            tabs.getChildren().addAll(tabButtons);
-
-            // --- Adiciona tudo no contêiner principal ---
-            filterContainer.getChildren().addAll(tabs, redBox);
         } else if ("Horário de Sessão".equals(selected)) {
             // Encontrar todos os filmes únicos que têm sessões nesta sala
             List<Movie> moviesNaSala = new ArrayList<>();
@@ -383,54 +307,5 @@ public class OccupationRelatoryController implements Initializable {
 
             sessionCounter++;
         }
-    }
-
-    private double calcularOcupacaoPara(String filtro) {
-        if (room == null || room.getSessions().isEmpty()) return 0.0;
-
-        LocalDate hoje = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        int totalIngressosVendidos = 0;
-        int totalIngressosOferecidos = 0;
-
-        for (Session session : room.getSessions()) {
-            LocalDate dataSessao;
-            try {
-                dataSessao = LocalDate.parse(session.getDate(), formatter);
-            } catch (DateTimeParseException e) {
-                System.err.println("Formato de data inválido na sessão: " + session.getDate());
-                continue;
-            }
-
-            boolean incluir = false;
-
-            switch (filtro) {
-                case "Hoje":
-                    incluir = dataSessao.equals(hoje);
-                    break;
-                case "Esta semana":
-                    incluir = dataSessao.isAfter(hoje.with(java.time.DayOfWeek.MONDAY).minusDays(1)) &&
-                            dataSessao.isBefore(hoje.with(java.time.DayOfWeek.SUNDAY).plusDays(1));
-                    break;
-                case "Este mês":
-                    incluir = dataSessao.getMonth() == hoje.getMonth() &&
-                            dataSessao.getYear() == hoje.getYear();
-                    break;
-                case "Este ano":
-                    incluir = dataSessao.getYear() == hoje.getYear();
-                    break;
-            }
-
-            if (incluir) {
-                int vendidos = room.getTotalSeat() - session.getTotalAvailableSeats();
-                totalIngressosVendidos += vendidos;
-                totalIngressosOferecidos += room.getTotalSeat();
-            }
-        }
-
-        if (totalIngressosOferecidos == 0) return 0.0;
-
-        return ((double) totalIngressosVendidos / totalIngressosOferecidos) * 100.0;
     }
 }
