@@ -78,7 +78,7 @@ public class    SessionRepository {
      * Retorna todas as sessões agendadas para uma dada data.
      *
      * @param date A data pela qual se quer filtrar as sessões.
-     * @return Uma GenericDynamicList contendo todas as sessões cuja data
+     * @return Uma LinkedList contendo todas as sessões cuja data
      *         seja igual à informada (pode retornar lista vazia se não houver nenhuma).
      */
     public LinkedList<Session> getByDate(LocalDate date) {

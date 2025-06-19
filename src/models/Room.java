@@ -1,11 +1,7 @@
 package models;
 
-import structures.queue.GenericDynamicQueue;
-
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 
 /**
  * Classe que representa uma sala de cinema no sistema.
@@ -32,8 +28,8 @@ public class Room {
     /** Número total de assentos disponíveis na sala */
     private int totalSeat;
     
-    /** Fila dinâmica que armazena as sessões programadas para esta sala */
-    private Queue<Session> sessions;
+    /** Lista dinâmica que armazena as sessões programadas para esta sala */
+    private List<Session> sessions;
 
     /**
      * Construtor da classe Room.
@@ -47,7 +43,7 @@ public class Room {
     public Room(int totalSeat){
         this.totalSeat = totalSeat;
         this.id = _idGenerator++;
-        this.sessions = new ArrayDeque<>();
+        this.sessions = new LinkedList<>();
     }
 
     /**
@@ -82,15 +78,15 @@ public class Room {
     }
 
     /**
-     * Remove e retorna a próxima sessão da fila.
+     * Remove e retorna a próxima sessão da lista.
      * 
-     * Remove a sessão que está no início da fila (primeira a ser adicionada)
+     * Remove a sessão que está no início da lista (primeira a ser adicionada)
      * seguindo o princípio FIFO.
      * 
      * @return a próxima sessão da fila, ou null se a fila estiver vazia
      */
     public Session removeSession(){
-        return sessions.remove();
+        return sessions.removeFirst();
     }
 
     /**
@@ -100,10 +96,10 @@ public class Room {
      * as sessões, possibilitando operações mais complexas como consultas
      * e iterações.
      * 
-     * @return a fila dinâmica contendo todas as sessões da sala
+     * @return a lista dinâmica contendo todas as sessões da sala
      */
-    public ArrayDeque<Session> getSessions() {
-        return (ArrayDeque<Session>) sessions;
+    public LinkedList<Session> getSessions() {
+        return (LinkedList<Session>) sessions;
     }
 
     /**
