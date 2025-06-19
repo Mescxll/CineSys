@@ -68,23 +68,18 @@
                </font>
          
             </Button>
-            <Button layoutX="1077.0" layoutY="649.0" mnemonicParsing="false" onAction="#changeSession" prefHeight="42.0" prefWidth="142.0" style="-fx-background-color: #F5841a; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Alterar" textFill="#f2e8c4">
+            <Button layoutX="1140.0" layoutY="649.0" mnemonicParsing="false" onAction="#changeSession" prefHeight="42.0" prefWidth="142.0" style="-fx-background-color: #F5841a; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Alterar" textFill="#f2e8c4">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Button>
             <Button layoutX="46.0" layoutY="15.0" mnemonicParsing="false" text="Button" visible="false" />
-            <Button layoutX="924.0" layoutY="649.0" mnemonicParsing="false" onAction="#deleteSession" prefHeight="42.0" prefWidth="142.0" style="-fx-background-color: #F5841a; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Excluir" textFill="#f2e8c4">
+            <Button layoutX="984.0" layoutY="649.0" mnemonicParsing="false" onAction="#deleteSession" prefHeight="42.0" prefWidth="142.0" style="-fx-background-color: #F5841a; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Excluir" textFill="#f2e8c4">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Button>
-            <Button layoutX="732.0" layoutY="649.0" mnemonicParsing="false" onAction="#ticket" prefHeight="42.0" prefWidth="180.0" style="-fx-background-color: #F5841a; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Vender Ingresso" textFill="#f2e8c4">
-               <font>
-                  <Font name="Arial" size="18.0" />
-               </font>
-            </Button>
-            <Button layoutX="473.0" layoutY="649.0" mnemonicParsing="false" onAction="#openRelatory" prefHeight="42.0" prefWidth="249.0" style="-fx-background-color: #F5841a; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Abrir Relatório de Venda" textFill="#f2e8c4">
+            <Button layoutX="789.0" layoutY="649.0" mnemonicParsing="false" onAction="#ticket" prefHeight="42.0" prefWidth="180.0" style="-fx-background-color: #F5841a; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Vender Ingresso" textFill="#f2e8c4">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>

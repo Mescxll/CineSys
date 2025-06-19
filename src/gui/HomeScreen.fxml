@@ -18,7 +18,7 @@
                   <Font name="Arial" size="48.0" />
                </font>
             </Label>
-            <Label layoutX="262.0" layoutY="42.0" style="-fx-font-weight: bold;" text="Controle de Sessões de Cinema" textFill="#f2e8c6">
+            <Label layoutX="261.0" layoutY="39.0" style="-fx-font-weight: bold;" text="Controle de Sessões de Cinema" textFill="#f2e8c6">
                <font>
                   <Font name="Arial" size="20.0" />
                </font>
@@ -121,23 +121,8 @@
             </Button>
          </children>
       </HBox>
-      <HBox layoutX="28.0" layoutY="425.0" prefHeight="101.0" prefWidth="1262.0" style="-fx-spacing: 20;">
+      <HBox layoutX="189.0" layoutY="398.0" prefHeight="101.0" prefWidth="943.0" style="-fx-spacing: 20;">
          <children>
-            <Button mnemonicParsing="false" onAction="#openPurchaseControl" prefHeight="120.0" prefWidth="300.0" style="-fx-background-color: #F58414; -fx-font-weight: bold;" text="Cancelar Ingresso&#10;(Selecione a compra)" textAlignment="CENTER" textFill="#f2e8c6">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-               <graphic>
-                  <ImageView fitHeight="88.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/img/cancelar.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
             <Button mnemonicParsing="false" onAction="#openClientControl" prefHeight="120.0" prefWidth="300.0" style="-fx-background-color: #bb0029; -fx-font-weight: bold;" text="Controle de Clientes" textAlignment="CENTER" textFill="#f2e8c6">
                <font>
                   <Font name="Arial" size="20.0" />
