@@ -1,7 +1,9 @@
 package repository;
 
 import models.Room;
-import structures.list.GenericDynamicList;
+
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 /**
  * Classe que gerencia as salas (Rooms) do cinema.
@@ -11,7 +13,7 @@ import structures.list.GenericDynamicList;
  * @version 1.0
  */
 public class RoomRepository {
-    private GenericDynamicList<Room> rooms = new GenericDynamicList<>();
+    private Queue<Room> rooms = new ArrayDeque<>();
 
     /**
      * Adiciona uma nova sala a lista.
@@ -20,7 +22,7 @@ public class RoomRepository {
      */
     public void add(Room room){
         try {
-            rooms.append(room);
+            rooms.add(room);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,22 +34,31 @@ public class RoomRepository {
      * @param id Identificador da sala.
      * @return A sala com o ID fornecido, ou null se não existir.
      */
-    public Room getById(int id){
-        for(int i = 0; i < rooms.size(); i++){
-            if (rooms.get(i).getId() == id) {
-                return rooms.get(i);
+    public Room getById(int id) {
+        Queue<Room> auxQueue = new ArrayDeque<>();
+        Room found = null;
+
+        while (!rooms.isEmpty()) {
+            Room current = rooms.poll(); // remove da fila original
+            if (current.getId() == id) {
+                found = current; // achou o ID
             }
+            auxQueue.add(current); // mantém o elemento na auxiliar
         }
-        return null;
+
+        // devolve os elementos para a fila original
+        rooms = auxQueue;
+
+        return found;
     }
     
     /**
      * Retorna todas as salas cadastradas.
      *
-     * @return A GenericDynamicList contendo todas as salas.
+     * @return Um ArrayDeque contendo todas as salas.
      */
-    public GenericDynamicList<Room> getAll(){
-        return rooms;
+    public ArrayDeque<Room> getAll(){
+        return (ArrayDeque<Room>) rooms;
     }
 
     /**
@@ -56,17 +67,23 @@ public class RoomRepository {
      * @param id Identificador da sala a ser removida.
      * @return true se a sala foi removida; false se não encontrou nenhuma com aquele ID.
      */
-    public boolean removeById(int id){
-        for(int i = 0; i < rooms.size(); i++){
-            if (rooms.get(i).getId() == id) {
-                try {
-                    rooms.remove(i);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
+    public boolean removeById(int id) {
+        Queue<Room> auxQueue = new ArrayDeque<>();
+        boolean removed = false;
+
+        while (!rooms.isEmpty()) {
+            Room current = rooms.poll(); // remove da fila original
+            if (current.getId() == id && !removed) {
+                removed = true; // achou e não adiciona na fila auxiliar (remove)
+                continue;
             }
+            auxQueue.add(current); // mantém o elemento que não foi removido
         }
-        return false;
+
+        // devolve os elementos para a fila original
+        rooms = auxQueue;
+
+        return removed;
     }
+
 }

@@ -3,7 +3,8 @@ package services;
 import models.Room;
 import models.Session;
 import repository.RoomRepository;
-import structures.list.GenericDynamicList;
+
+import java.util.ArrayDeque;
 
 /**
  * Classe de serviço responsável pela lógica de negócios
@@ -51,7 +52,7 @@ public class RoomService {
      *
      * @return Lista de todas as salas.
      */
-    public GenericDynamicList<Room> getAllRooms(){
+    public ArrayDeque<Room> getAllRooms(){
         return roomRepository.getAll();
     }
 

@@ -2,6 +2,11 @@ package models;
 
 import structures.queue.GenericDynamicQueue;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * Classe que representa uma sala de cinema no sistema.
  * 
@@ -28,7 +33,7 @@ public class Room {
     private int totalSeat;
     
     /** Fila dinâmica que armazena as sessões programadas para esta sala */
-    private GenericDynamicQueue<Session> sessions;
+    private Queue<Session> sessions;
 
     /**
      * Construtor da classe Room.
@@ -42,7 +47,7 @@ public class Room {
     public Room(int totalSeat){
         this.totalSeat = totalSeat;
         this.id = _idGenerator++;
-        this.sessions = new GenericDynamicQueue<Session>();
+        this.sessions = new ArrayDeque<>();
     }
 
     /**
@@ -73,7 +78,7 @@ public class Room {
      * @throws Exception se ocorrer erro ao adicionar a sessão na fila
      */
     public void addSession(Session session) throws Exception{
-        sessions.enqueue(session);
+        sessions.add(session);
     }
 
     /**
@@ -85,7 +90,7 @@ public class Room {
      * @return a próxima sessão da fila, ou null se a fila estiver vazia
      */
     public Session removeSession(){
-        return sessions.dequeue();
+        return sessions.remove();
     }
 
     /**
@@ -97,8 +102,8 @@ public class Room {
      * 
      * @return a fila dinâmica contendo todas as sessões da sala
      */
-    public GenericDynamicQueue<Session> getSessions() {
-        return sessions;
+    public ArrayDeque<Session> getSessions() {
+        return (ArrayDeque<Session>) sessions;
     }
 
     /**
