@@ -1,0 +1,632 @@
+@startuml
+skinparam classAttributeIconSize 0
+class OversoldController{
+- backButton : Button
+- handleBack() : void
+}
+class ClientService{
+- clientRepository : ClientRepository
++ ClientService(clientRepository : ClientRepository)
++ addClient(name : String, email : String, birthday : String) : String
++ getAllClients() : LinkedList<Client>
++ updateClient(id : int, name : String, email : String, birthday : String) : String
++ removeClient(id : int) : Client
++ getClientById(id : int) : Client
++ addTicketToClient(clientId : int, ticket : Ticket) : void
++ getClientHistory(clientId : int) : LinkedList<Ticket>
++ calculateDiscount(clientId : int) : double
++ registerPoints(clientId : int, ticket : Ticket) : void
++ removeAllClients() : void
++ removeTicketFromHistory(clientId : int, ticketToRemove : Ticket) : void
++ removePoints(clientId : int, pointsToRemove : int) : void
+}
+class PopUpDiscountController{
+- discountMessage : Label
+- backButton : Button
+- stage : Stage
++ setDiscount(discount : double) : void
++ setStage(stage : Stage) : void
+- backClientControl() : void
+}
+class MainViews{
+- {static} stage : Stage
+- {static} homeScreenScene : Scene
+- {static} changeClientScene : Scene
+- {static} clientControlScene : Scene
+- {static} clientHistoryScene : Scene
+- {static} movieControlScene : Scene
+- {static} movieEditScene : Scene
+- {static} occupationRelatoryScene : Scene
+- {static} popUpClientScene : Scene
+- {static} popUpMoviesScene : Scene
+- {static} purchaseRecordScene : Scene
+- {static} purchaseRelatoryScene : Scene
+- {static} registerClientScene : Scene
+- {static} registerMovieScene : Scene
+- {static} registerSessionScene : Scene
+- {static} roomOccupationScene : Scene
+- {static} sellTicketScene : Scene
+- {static} sessionControlScene : Scene
+- {static} updateSessionScene : Scene
+- {static} popUpRegisteredSaleScene : Scene
+- {static} popUpDiscountScene : Scene
+- {static} popUpSessionScene : Scene
+- {static} oversoldScene : Scene
+- {static} listeners : List<OnChangeScreen>
++ start(primaryStage : Stage) : void
++ {static} changeScreen(screen : String, userDataObject : Object) : void
++ {static} main(args : String[]) : void
++ {static} addOnChangeScreenListener(newListener : OnChangeScreen) : void
+- {static} notifyAllListerners(newScreen : String, userDataObject : Object) : void
+}
+MainViews --|> Application
+class PopUpClientController{
+- lblMsg : Label
+- stage : Stage
++ setMensagemPersonalizada(mensagem : String) : void
++ setStage(stage : Stage) : void
+backClientControl(event : ActionEvent) : void
+}
+class PopUpSessionController{
+- stage : Stage
+- msgSession : Label
++ setMensagemPersonalizada(mensagem : String) : void
++ setStage(stage : Stage) : void
+backSessionControl(event : ActionEvent) : void
+}
+class RegisterSessionController{
+- txtDate : TextField
+- txtMovieId : TextField
+- txtPrice : TextField
+- txtRoom : TextField
+- txtTime : TextField
++ initialize(url : URL, rb : ResourceBundle) : void
+backSessionController(event : ActionEvent) : void
+registerSession(event : ActionEvent) : void
+}
+RegisterSessionController ..|> Initializable
+class SessionService{
+- sessionRepository : SessionRepository
++ SessionService(sessionRepository : SessionRepository)
++ addSession(date : LocalDate, time : LocalTime, room : Room, movie : Movie, ticketValue : Double) : void
++ addSession(date : LocalDate, time : LocalTime, room : Room, movie : Movie, ticketValue : Double, totalAvailableSeats : int) : void
++ updateSession(id : int, date : LocalDate, time : LocalTime, room : Room, movie : Movie, ticketValue : Double) : void
++ getSessionById(id : int) : Session
++ getAllSessions() : LinkedList<Session>
++ getSessionsByDate(date : LocalDate) : LinkedList<Session>
++ removeSession(id : int) : Session
++ removeAllSessions() : void
+}
+class ClientController{
+- {static} clientService : ClientService
++ {static} addClient(name : String, email : String, birthday : String) : String
++ {static} updateClient(id : int, name : String, email : String, birthday : String) : String
++ {static} removeClient(id : int) : Client
++ {static} getClientById(id : int) : Client
++ {static} addTicketToClient(clientId : int, ticket : Ticket) : void
++ {static} getAllClients() : LinkedList<Client>
++ {static} getClientHistory(clientId : int) : LinkedList<Ticket>
++ {static} calculateDiscount(clientId : int) : double
++ {static} registerPoints(clientId : int, ticket : Ticket) : void
++ {static} removeAllClients() : void
++ {static} removeTicketFromHistory(clientId : int, ticket : Ticket) : void
++ {static} removePoints(clientId : int, pointsToRemove : int) : void
+}
+class HomeScreenController{
+- closeButton : ImageView
+openClientControl(event : ActionEvent) : void
+closeCineSys(event : ActionEvent) : void
+openRegisterClient(event : ActionEvent) : void
+openMovieControl(event : ActionEvent) : void
+openOccupationRelatory(event : ActionEvent) : void
+openPurchaseControl(event : ActionEvent) : void
+openPurchaseRelatory(event : ActionEvent) : void
+openSessionControl(event : ActionEvent) : void
+}
+class MovieService{
+- movieRepository : MovieRepository
++ MovieService(movieRepository : MovieRepository)
++ addMovie(title : String, genre : String, duration : int, classification : String, synopsis : String) : String
++ updateMovie(id : int, title : String, genre : String, duration : int, classification : String, synopsis : String) : String
++ getAllMovies() : LinkedList<Movie>
++ getMovieById(id : int) : Movie
++ removeMovieById(id : int) : boolean
++ getMovieByName(name : String) : Movie
++ getSessionsByMovie(id : int) : LinkedList<Session>
++ removeAllMovies() : void
+}
+class PurchaseRecordController{
+- {static} ticket : Ticket
+- labelMovie : Label
+- labelName : Label
+- labelPagamento : Label
+- labelSession : Label
+- labelTicket : Label
+- lnlNome : Label
++ initialize(url : URL, rb : ResourceBundle) : void
++ {static} mostrarPopUpCancellTicket() : void
+- accessTicketData() : void
+backPurchase(event : ActionEvent) : void
+cancelTicket(event : ActionEvent) : void
+openClient(event : ActionEvent) : void
+}
+PurchaseRecordController ..|> Initializable
+class UpdateSessionController{
+- {static} session : Session
+- txtDate : TextField
+- txtMovieId : TextField
+- txtPrice : TextField
+- txtRoom : TextField
+- txtTime : TextField
++ initialize(url : URL, rb : ResourceBundle) : void
+backSessionController(event : ActionEvent) : void
+updateSession(event : ActionEvent) : void
+}
+UpdateSessionController ..|> Initializable
+class TicketService{
+- ticketRepository : TicketRepository
++ TicketService(ticketRepository : TicketRepository)
++ getAllTickets() : LinkedList<Ticket>
++ getTicketById(id : int) : Ticket
++ removeTicketById(id : int) : void
++ purchaseTicket(clientId : int, sessionId : int, paymentMethod : String) : Ticket
++ removeAllTickets() : void
+}
+class Session{
+- {static} _idGenerator : int
+- id : int
+- date : LocalDate
+- time : LocalTime
+- duration : int
+- room : Room
+- totalAvailableSeats : int
+- movie : Movie
+- ticketValue : Double
++ Session(date : LocalDate, time : LocalTime, room : Room, movie : Movie, ticketValue : Double)
++ Session(date : LocalDate, time : LocalTime, room : Room, movie : Movie, ticketValue : Double, totalAvailableSeats : int)
++ getDate() : String
++ setDate(date : LocalDate) : void
++ setTime(time : LocalTime) : void
++ getTime() : String
++ getDuration() : int
++ getRoom() : Room
++ setRoom(room : Room) : void
++ getMovie() : Movie
++ setMovie(movie : Movie) : void
++ getTicketValue() : Double
++ setTicketValue(ticketValue : Double) : void
++ getTotalAvailableSeats() : int
++ setTotalAvailableSeats(totalAvailableSeats : int) : void
++ getId() : int
++ toString() : String
++ {static} resetIdGenerator() : void
+}
+class RoomRepository{
+- rooms : List<Room>
++ add(room : Room) : void
++ getById(id : int) : Room
++ getAll() : LinkedList<Room>
++ removeById(id : int) : boolean
+}
+class ClientHistoryController{
+- {static} client : Client
+- containerResultados : VBox
+- lblEmail : Label
+- lblID : Label
+- lblNascimento : Label
+- lblNumIngressos : Label
+- lnlNome : Label
+backPurchase(event : ActionEvent) : void
+- resetScreen() : void
++ initialize(url : URL, rb : ResourceBundle) : void
+- accessClientData() : void
+}
+ClientHistoryController ..|> Initializable
+class ClientControlController{
+- {static} client : Client
+- containerResultados : VBox
+- scrollResultados : ScrollPane
+- txtBusca : TextField
++ initialize(url : URL, resourceBundle : ResourceBundle) : void
+- addFilter() : void
+- search() : void
+- searchResults(clientList : List<Client>) : void
++ {static} mostrarPopUp(acao : String) : void
+openHomeScreen(event : ActionEvent) : void
+openRegisterClient(event : ActionEvent) : void
+openClientControl(event : ActionEvent) : void
+openMovieControl(event : ActionEvent) : void
+openPurchaseHistory(event : ActionEvent) : void
+openRoomOccupation(event : ActionEvent) : void
+openSessionControl(event : ActionEvent) : void
+buscar(event : ActionEvent) : void
+}
+ClientControlController ..|> Initializable
+class Ticket{
+- {static} _idGenerator : int
+- id : int
+- finalPrice : double
+- client : Client
+- session : Session
+- paymentMethod : PaymentMethod
++ Ticket(client : Client, session : Session, finalPrice : double, paymentMethod : PaymentMethod)
++ {static} get_idGenerator() : int
++ getId() : int
++ getFinalPrice() : double
++ getClient() : Client
++ getSession() : Session
++ getPaymentMethod() : PaymentMethod
++ toString() : String
++ {static} resetIdGenerator() : void
+}
+class PopUpMovieController{
+- mensagemLabel : Label
+- stage : Stage
++ setMensagemPersonalizada(mensagem : String) : void
++ setStage(stage : Stage) : void
+backMovietControl(event : ActionEvent) : void
+}
+class SessionControlController{
+- table : TableView<Session>
+- selectColumn : TableColumn<Session,Boolean>
+- classification : TableColumn<Session,String>
+- room : TableColumn<Session,String>
+- duration : TableColumn<Session,String>
+- movieName : TableColumn<Session,String>
+- price : TableColumn<Session,String>
+- data : TableColumn<Session,String>
+- time : TableColumn<Session,String>
+- freeSeats : TableColumn<Session,String>
+- selectedSessions : ObservableList<Session>
+- sessionsForTable : ObservableList<Session>
+- sessionSelectionMap : Map<Session,SimpleBooleanProperty>
+- allSessions : List<Session>
++ initialize(url : URL, rb : ResourceBundle) : void
++ onScreenChanged(newScreen : String, userDataObject : Object) : void
+- refreshTable() : void
++ {static} mostrarPopUp(acao : String) : void
+registerSession(event : ActionEvent) : void
+changeSession(event : ActionEvent) : void
+deleteSession(event : ActionEvent) : void
+ticket(event : ActionEvent) : void
+openHomeScreen(event : ActionEvent) : void
+openClientControl(event : ActionEvent) : void
+openMovieControl(event : ActionEvent) : void
+openPurchaseRelatory(event : ActionEvent) : void
+openRoomOccupation(event : ActionEvent) : void
+openSessionControl(event : ActionEvent) : void
+}
+SessionControlController ..|> Initializable
+SessionControlController ..|> OnChangeScreen
+class SaleController{
++ {static} processSale(client : Client, session : Session, quantity : int, paymentMethod : PaymentMethod) : ArrayList<Ticket>
++ {static} cancelSale(ticketId : int) : void
+}
+class Client{
+- {static} _idGenerator : int
+- id : int
+- name : String
+- email : String
+- birthday : LocalDate
+- points : int
+- purchasingHistory : List<Ticket>
++ Client(name : String, email : String, birthday : LocalDate)
++ getId() : int
++ getName() : String
++ getEmail() : String
++ getBirthday() : String
++ getPoints() : int
++ setPoints(points : int) : void
++ removePoints(pointsToRemove : int) : void
++ getPurchasingHistory() : LinkedList<Ticket>
++ setName(name : String) : void
++ setEmail(email : String) : void
++ setBirthday(birthday : LocalDate) : void
++ addTicketToHistory(ticket : Ticket) : boolean
++ addPoints(additionalPoints : int) : void
++ printHistory() : String
++ toString() : String
++ {static} resetIdGenerator() : void
+}
+class SessionRepository{
+- sessions : List<Session>
++ add(session : Session) : void
++ getById(id : int) : Session
++ update(id : int, session : Session) : void
+- getIndex(id : int) : int
++ getByDate(date : LocalDate) : LinkedList<Session>
++ getAll() : LinkedList<Session>
++ removeById(id : int) : boolean
++ clear() : void
+}
+class TicketRepository{
+- tickets : List<Ticket>
++ add(ticket : Ticket) : void
++ getById(id : int) : Ticket
++ update(id : int, ticket : Ticket) : void
+- getIndex(id : int) : int
++ getAll() : LinkedList<Ticket>
++ removeById(id : int) : boolean
++ clear() : void
+}
+class TicketController{
+- {static} ticketService : TicketService
++ {static} purchaseTicket(clientId : int, sessionId : int, paymentMethod : String) : Ticket
++ {static} getAllTickets() : LinkedList<Ticket>
++ {static} getTicketById(id : int) : Ticket
++ {static} removeTicketById(id : int) : void
++ {static} removeAllTickets() : void
+}
+class EditMovieController{
+- titleField : TextField
+- genreField : TextField
+- durationField : TextField
+- ratingField : TextField
+- synopsisField : TextField
+- {static} movie : Movie
++ initialize(url : URL, rb : ResourceBundle) : void
+backMovieControl(event : ActionEvent) : void
+editMovie(event : ActionEvent) : void
+}
+EditMovieController ..|> Initializable
+class PurchaseHistoryController{
+- scrollPaneResultados : ScrollPane
+- containerResultados : VBox
+- txtBusca : TextField
++ initialize(url : URL, resourceBundle : ResourceBundle) : void
+openHomeScreen(event : ActionEvent) : void
+openClientControl(event : ActionEvent) : void
+openMovieControl(event : ActionEvent) : void
+openPurchaseHistory(event : ActionEvent) : void
+openRoomOccupation(event : ActionEvent) : void
+openSessionControl(event : ActionEvent) : void
+- addFilter() : void
+buscar(event : ActionEvent) : void
+- search() : void
+- searchResults(clientList : List<Client>) : void
+}
+PurchaseHistoryController ..|> Initializable
+class Room{
+- {static} _idGenerator : int
+- id : int
+- totalSeat : int
+- sessions : List<Session>
++ Room(totalSeat : int)
++ getId() : int
++ getTotalSeat() : int
++ addSession(session : Session) : void
++ removeSession() : Session
++ getSessions() : LinkedList<Session>
++ toString() : String
++ {static} resetIdGenerator() : void
+}
+class ClientRepository{
+- clients : List<Client>
++ add(client : Client) : void
++ getById(id : int) : Client
++ update(id : int, client : Client) : void
+- getIndex(id : int) : int
++ getAll() : LinkedList<Client>
++ removeById(id : int) : boolean
++ clear() : void
+}
+class PopUpTicketCanceledController{
+- client : Client
+- backButton : Button
+- stage : Stage
++ setStage(stage : Stage) : void
++ getClient(cl : Client) : void
+- backToClientHistory() : void
+}
+class RegisterMovieController{
+- titleField : TextField
+- genreField : TextField
+- durationField : TextField
+- ratingField : TextField
+- synopsisField : TextField
++ initialize(url : URL, rb : ResourceBundle) : void
+backMovieControl(event : ActionEvent) : void
+registerMovie(event : ActionEvent) : void
+}
+RegisterMovieController ..|> Initializable
+class RoomOccupationController{
+openHomeScreen(event : ActionEvent) : void
+openClientControl(event : ActionEvent) : void
+openMovieControl(event : ActionEvent) : void
+openPurchaseHistory(event : ActionEvent) : void
+openRoomOccupation(event : ActionEvent) : void
+openSessionControl(event : ActionEvent) : void
+openRoom1(event : ActionEvent) : void
+openRoom2(event : ActionEvent) : void
+openRoom3(event : ActionEvent) : void
+openRoom4(event : ActionEvent) : void
+openRoom5(event : ActionEvent) : void
+}
+class SellTicketController{
+- clientId : TextField
+- paymentMethod : TextField
+- session : Session
+- radioGroup : ToggleGroup
+- sessions : List<Session>
++ initialize() : void
+- handleRegisterSale() : void
+- handleBack() : void
+- showAlert(msg : String) : void
+- showDiscountPopup(discount : double) : void
++ {static} mostrarPopUpSale() : void
+}
+class SessionController{
+- {static} sessionService : SessionService
++ {static} addSession(date : String, time : String, room : Room, movie : Movie, ticketValue : Double) : void
++ {static} addSession(date : String, time : String, room : Room, movie : Movie, ticketValue : Double, totalAvailabelSeats : int) : void
++ {static} updateSession(id : int, date : String, time : String, room : Room, movie : Movie, ticketValue : Double) : void
++ {static} getSessionById(id : int) : Session
++ {static} getAllSessions() : LinkedList<Session>
++ {static} removeSession(id : int) : Session
++ {static} removeAllSessions() : void
+}
+class ChangeClientController{
+- {static} client : Client
+- boxDate : TextField
+- boxEmail : TextField
+- boxName : TextField
++ initialize(url : URL, rb : ResourceBundle) : void
+backClient(event : ActionEvent) : void
+changeClient(event : ActionEvent) : void
+}
+ChangeClientController ..|> Initializable
+class MovieControlController{
+- movieTable : TableView<Movie>
+- selectColumn : TableColumn<Movie,Boolean>
+- titleColumn : TableColumn<Movie,String>
+- genreColumn : TableColumn<Movie,String>
+- durationColumn : TableColumn<Movie,String>
+- ratingColumn : TableColumn<Movie,String>
+- synopsisColumn : TableColumn<Movie,String>
+- selectedMovies : ObservableList<Movie>
+- moviesForTable : ObservableList<Movie>
+- movieSelectionMap : Map<Movie,SimpleBooleanProperty>
++ initialize(url : URL, rb : ResourceBundle) : void
++ onScreenChanged(newScreen : String, userDataObject : Object) : void
+- refreshTable() : void
++ {static} mostrarPopUp(acao : String) : void
+registerMovie(event : ActionEvent) : void
+deleteMovie(event : ActionEvent) : void
+editMovie(event : ActionEvent) : void
+openHomeScreen(event : ActionEvent) : void
+openClientControl(event : ActionEvent) : void
+openMovieControl(event : ActionEvent) : void
+openPurchaseHistory(event : ActionEvent) : void
+openRoomOccupation(event : ActionEvent) : void
+openSessionControl(event : ActionEvent) : void
+}
+MovieControlController ..|> Initializable
+MovieControlController ..|> OnChangeScreen
+class RegisterClientController{
+- enterDate : TextField
+- enterEmail : TextField
+- enterName : TextField
++ initialize(url : URL, rb : ResourceBundle) : void
+backClient(event : ActionEvent) : void
+registerClient(event : ActionEvent) : void
+}
+RegisterClientController ..|> Initializable
+class RoomService{
+- roomRepository : RoomRepository
++ RoomService(roomRepository : RoomRepository)
+- addRoom(totalSeat : int) : boolean
++ getAllRooms() : LinkedList<Room>
++ getRoomById(id : int) : Room
++ addSessionToRoom(roomId : int, session : Session) : boolean
++ removeNextSessionFromRoom(roomId : int) : Session
+}
+class OccupationRelatoryController{
+- {static} room : Room
+- selected : String
+- roomName : Label
+- totalSeat : Label
+- filterContainer : VBox
+- filterOccupation : ComboBox<String>
+- filter : List<String>
+- items : ObservableList<String>
+backRoomOccupation(event : ActionEvent) : void
+- resetScreen() : void
++ initialize(url : URL, rb : ResourceBundle) : void
+- updateRoomSpecificUI() : void
++ addFilter() : void
++ showFilter() : void
+- displaySessionsForMovie(movie : Movie, container : VBox) : void
+}
+OccupationRelatoryController ..|> Initializable
+class MovieRepository{
+- movies : List<Movie>
++ add(movie : Movie) : void
++ getById(id : int) : Movie
++ update(id : int, movie : Movie) : void
+- getIndex(id : int) : int
++ getAll() : LinkedList<Movie>
++ removeById(id : int) : boolean
++ getMovieByName(name : String) : Movie
++ clear() : void
+}
+class MovieController{
+- {static} movieService : MovieService
++ {static} addMovie(title : String, genre : String, duration : int, classification : String, synopsis : String) : String
++ {static} updateMovie(id : int, title : String, genre : String, duration : int, classification : String, synopsis : String) : String
++ {static} getAllMovies() : LinkedList<Movie>
++ {static} getMovieById(id : int) : Movie
++ {static} removeMovieById(id : int) : boolean
++ {static} getMovieByName(name : String) : Movie
++ {static} getSessionsByMovie(id : int) : LinkedList<Session>
++ {static} removeAllMovies() : void
+}
+class RoomController{
+- {static} roomService : RoomService
++ {static} getAllRooms() : LinkedList<Room>
++ {static} getRoomById(id : int) : Room
++ {static} addSessionToRoom(roomId : int, session : Session) : boolean
++ {static} removeNextSessionFromRoom(roomId : int) : Session
+}
+class PopUpRegisteredSaleController{
+- backButton : Button
+- stage : Stage
++ setStage(stage : Stage) : void
+- backToSellTicket() : void
+}
+class Movie{
+- {static} _idGenerator : int
+- id : int
+- title : String
+- genre : String
+- duration : int
+- classification : String
+- synopsis : String
++ Movie(title : String, genre : String, duration : int, classification : String, synopsis : String)
++ getId() : int
++ getTitle() : String
++ setTitle(title : String) : void
++ getGenre() : String
++ setGenre(genre : String) : void
++ getDuration() : int
++ setDuration(duration : int) : void
++ getClassification() : String
++ setClassification(classification : String) : void
++ getSynopsis() : String
++ setSynopsis(synopsis : String) : void
++ toString() : String
++ {static} resetIdGenerator() : void
+}
+ClientService--"- clientRepository" ClientRepository
+SessionService--"- sessionRepository" SessionRepository
+ClientController--"- {static} clientService" ClientService
+MovieService--"- movieRepository" MovieRepository
+PurchaseRecordController--"- {static} ticket" Ticket
+UpdateSessionController--"- {static} session" Session
+TicketService--"- ticketRepository" TicketRepository
+Session--"- room" Room
+Session--"- movie" Movie
+ClientHistoryController--"- {static} client" Client
+ClientControlController--"- {static} client" Client
+Ticket--"- client" Client
+Ticket--"- session" Session
+Ticket--"- paymentMethod" PaymentMethod
+TicketController--"- {static} ticketService" TicketService
+EditMovieController--"- {static} movie" Movie
+PopUpTicketCanceledController--"- client" Client
+SellTicketController--"- session" Session
+SessionController--"- {static} sessionService" SessionService
+ChangeClientController--"- {static} client" Client
+RoomService--"- roomRepository" RoomRepository
+OccupationRelatoryController--"- {static} room" Room
+MovieController--"- {static} movieService" MovieService
+RoomController--"- {static} roomService" RoomService
+interface OnChangeScreen{
+onScreenChanged(newScreen : String, userDataObject : Object) : void
+}
+enum PaymentMethod{
+CASH
+CREDIT_CARD
+DEBIT_CARD
+PIX
+}
+@enduml
