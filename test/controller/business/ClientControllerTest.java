@@ -7,6 +7,8 @@ import org.junit.Test;
 import structures.list.GenericDynamicList;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedList;
+
 import static org.junit.Assert.*;
 
 /**
@@ -79,7 +81,7 @@ public class ClientControllerTest {
 
         ClientController.addTicketToClient(client.getId(), ticket);
 
-        GenericDynamicList<Ticket> history = ClientController.getClientHistory(client.getId());
+        LinkedList<Ticket> history = ClientController.getClientHistory(client.getId());
         assertEquals(1, history.size());
         assertEquals(ticket, history.get(0));
     }

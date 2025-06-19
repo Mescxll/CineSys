@@ -53,9 +53,9 @@ public class ClientService {
     /**
      * Retorna todos os clientes cadastrados.
      *
-     * @return Uma List contendo todos os clientes.
+     * @return Uma LinkedList contendo todos os clientes.
      */
-    public List<Client> getAllClients() {
+    public LinkedList<Client> getAllClients() {
         return clientRepository.getAll();
     }
 

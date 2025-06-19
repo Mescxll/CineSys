@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Classe que manipula diretamente a lista de filmes.
- * Utiliza a estrutura GenericDynamicList como um banco de dados para armazenar os filmes.
+ * Utiliza a estrutura LinkedList como um banco de dados para armazenar os filmes.
  * @author Vinícius Nunes de Andrade
  * @author Thiago Ferreira Ribeiro
  * @since 11/06/2025

@@ -9,7 +9,7 @@ import models.Session;
 
 /**
  * Classe que gerencia as sessões (Session) do cinema.
- * Usamos uma GenericDynamicList como "banco de dados".
+ * Usamos uma LinkedList como "banco de dados".
  *
  * @author Thiago Ferreira Ribeiro
  * @since 11/06/2025
