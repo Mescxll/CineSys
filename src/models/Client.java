@@ -105,8 +105,8 @@ public class Client {
      * Obtém o histórico de compras do cliente.
      * @return Uma lista dinâmica contendo os tickets comprados pelo cliente.
      */
-    public List<Ticket> getPurchasingHistory() {
-        return purchasingHistory;
+    public LinkedList<Ticket> getPurchasingHistory() {
+        return (LinkedList<Ticket>) purchasingHistory;
     }
 
     /**

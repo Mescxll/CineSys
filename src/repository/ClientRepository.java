@@ -74,10 +74,10 @@ public class ClientRepository {
     /**
      * Retorna todos os clientes cadastrados.
      *
-     * @return Uma GenericDynamicList de clientes.
+     * @return Uma LinkedList de clientes.
      */
-    public List<Client> getAll(){
-        return clients;
+    public LinkedList<Client> getAll(){
+        return (LinkedList<Client>) clients;
     }
 
     /**

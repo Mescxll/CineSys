@@ -1,6 +1,7 @@
 package services;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 import models.Client;
@@ -150,7 +151,7 @@ public class ClientService {
      * @return Uma List de Tickets do cliente.
      * @throws IllegalArgumentException se o ID for inválido ou cliente não existir.
      */
-    public List<Ticket> getClientHistory(int clientId) {
+    public LinkedList<Ticket> getClientHistory(int clientId) {
         Client client = getClientById(clientId);
         return client.getPurchasingHistory();
     }
