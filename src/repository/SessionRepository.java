@@ -1,9 +1,11 @@
 package repository;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 import models.Session;
-import structures.list.GenericDynamicList;
 
 /**
  * Classe que gerencia as sessões (Session) do cinema.
@@ -14,7 +16,7 @@ import structures.list.GenericDynamicList;
  * @version 2.0
  */
 public class    SessionRepository {
-    private GenericDynamicList<Session> sessions = new GenericDynamicList<>();
+    private List<Session> sessions = new LinkedList<>();
 
     /**
      * Adiciona uma nova sessão a lista.
@@ -23,7 +25,7 @@ public class    SessionRepository {
      */
     public void add(Session session){
         try {
-            sessions.append(session);
+            sessions.add(session);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,7 +55,7 @@ public class    SessionRepository {
     public void update(int id, Session session){
         if(getById(id) == null)
             throw new IllegalArgumentException("Sessão não existe!");
-        sessions.update(getIndex(id), session);
+        sessions.set(getIndex(id), session);
     }
 
     /**
@@ -79,15 +81,14 @@ public class    SessionRepository {
      * @return Uma GenericDynamicList contendo todas as sessões cuja data
      *         seja igual à informada (pode retornar lista vazia se não houver nenhuma).
      */
-    public GenericDynamicList<Session> getByDate(LocalDate date){
-        GenericDynamicList<Session> sessionsByDate = new GenericDynamicList<>();
-        for(int i = 0; i < sessions.size(); i++){
-            if (sessions.get(i).getDate().equals(date)) {
-                try {
-                    sessionsByDate.append(sessions.get(i));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    public LinkedList<Session> getByDate(LocalDate date) {
+        LinkedList<Session> sessionsByDate = new LinkedList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String dateString = date.format(formatter);
+
+        for (Session session : sessions) {
+            if (session.getDate().equals(dateString)) {
+                sessionsByDate.add(session);
             }
         }
         return sessionsByDate;
@@ -96,10 +97,10 @@ public class    SessionRepository {
     /**
      * Retorna todas as sessões cadastradas.
      *
-     * @return A GenericDynamicList contendo todas as sessões.
+     * @return A LinkedList contendo todas as sessões.
      */
-    public GenericDynamicList<Session> getAll(){
-        return sessions;
+    public LinkedList<Session> getAll(){
+        return (LinkedList<Session>) sessions;
     }
     
     /**
