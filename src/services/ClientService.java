@@ -1,11 +1,11 @@
 package services;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import models.Client;
 import models.Ticket;
 import repository.ClientRepository;
-import structures.list.GenericDynamicList;
 
 /**
  * Classe de serviço responsável pela lógica de negócio dos clientes.
@@ -52,9 +52,9 @@ public class ClientService {
     /**
      * Retorna todos os clientes cadastrados.
      *
-     * @return Uma GenericDynamicList contendo todos os clientes.
+     * @return Uma List contendo todos os clientes.
      */
-    public GenericDynamicList<Client> getAllClients() {
+    public List<Client> getAllClients() {
         return clientRepository.getAll();
     }
 
@@ -147,10 +147,10 @@ public class ClientService {
      * Retorna o histórico de compras de um cliente específico.
      *
      * @param clientId ID do cliente.
-     * @return Uma GenericDynamicList de Tickets do cliente.
+     * @return Uma List de Tickets do cliente.
      * @throws IllegalArgumentException se o ID for inválido ou cliente não existir.
      */
-    public GenericDynamicList<Ticket> getClientHistory(int clientId) {
+    public List<Ticket> getClientHistory(int clientId) {
         Client client = getClientById(clientId);
         return client.getPurchasingHistory();
     }
@@ -243,7 +243,7 @@ public class ClientService {
             throw new IllegalArgumentException("O ticket a ser removido não pode ser nulo.");
         }
 
-        GenericDynamicList<Ticket> history = client.getPurchasingHistory();
+        List<Ticket> history = client.getPurchasingHistory();
         int indexToRemove = -1;
         boolean removed = false;
 

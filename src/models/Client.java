@@ -3,6 +3,8 @@ package models;
 import structures.list.GenericDynamicList;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Classe que representa um cliente.
@@ -18,7 +20,7 @@ public class Client {
     private String email;
     private LocalDate birthday;
     private int points;
-    private GenericDynamicList<Ticket> purchasingHistory;
+    private List<Ticket> purchasingHistory;
     
     /**
      * Construtor da classe Client.
@@ -32,7 +34,7 @@ public class Client {
         this.email = email;
         this.birthday = birthday;
         this.points = 0;
-        purchasingHistory = new GenericDynamicList<>();
+        purchasingHistory = new LinkedList<>();
         id = _idGenerator++;
     }
 
@@ -103,7 +105,7 @@ public class Client {
      * Obtém o histórico de compras do cliente.
      * @return Uma lista dinâmica contendo os tickets comprados pelo cliente.
      */
-    public GenericDynamicList<Ticket> getPurchasingHistory() {
+    public List<Ticket> getPurchasingHistory() {
         return purchasingHistory;
     }
 
@@ -138,7 +140,7 @@ public class Client {
      */
     public boolean addTicketToHistory(Ticket ticket) {
         try {
-            purchasingHistory.append(ticket);
+            purchasingHistory.add(ticket);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
