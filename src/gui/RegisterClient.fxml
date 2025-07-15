@@ -54,58 +54,7 @@
               </Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="244.0" layoutY="220.0" prefHeight="209.0" prefWidth="832.0" style="-fx-background-color: #F58414; -fx-background-radius: 6px;">
-               <children>
-                  <Label alignment="CENTER" layoutX="39.0" layoutY="30.0" style="-fx-font-weight: bold;" text="Preencha os campos para cadastro:" textAlignment="CENTER" textFill="#f2e8c4">
-                     <font>
-                        <Font name="Arial" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="39.0" layoutY="95.0" style="&#10;" text="Nome: * " textAlignment="CENTER" textFill="#f2e8c4" wrapText="false">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="588.0" layoutY="95.0" style="&#10;" text="Email: * " textAlignment="CENTER" textFill="#f2e8c4" wrapText="false">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="338.0" layoutY="95.0" style="&#10;" text="Data de Nascimento: * " textAlignment="CENTER" textFill="#f2e8c4" wrapText="false">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="enterName" layoutX="39.0" layoutY="125.0" opacity="0.52" prefHeight="41.0" prefWidth="265.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
-                     <font>
-                        <Font name="Arial" size="12.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </TextField>
-                  <TextField fx:id="enterEmail" layoutX="588.0" layoutY="124.0" opacity="0.52" prefHeight="41.0" prefWidth="205.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
-                     <font>
-                        <Font name="Arial" size="12.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </TextField>
-                  <TextField fx:id="enterDate" layoutX="339.0" layoutY="124.0" opacity="0.52" prefHeight="41.0" prefWidth="213.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
-                     <font>
-                        <Font name="Arial" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="-1.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </TextField>
-               </children>
-            </AnchorPane>
-            <Button layoutX="934.0" layoutY="453.0" mnemonicParsing="false" onAction="#registerClient" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: #F5841A; -fx-background-radius: 5px; -fx-font-weight: bold;" text="Cadastar" textFill="#f2e8c4">
+            <Button layoutX="1042.0" layoutY="462.0" mnemonicParsing="false" onAction="#registerClient" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: #F5841A; -fx-background-radius: 5px; -fx-font-weight: bold;" text="Cadastar" textFill="#f2e8c4">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
@@ -121,6 +70,70 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <AnchorPane layoutX="136.0" layoutY="244.0" prefHeight="202.0" prefWidth="1048.0" style="-fx-background-color: #F58414; -fx-background-radius: 6px;">
+               <children>
+                  <Label alignment="CENTER" layoutX="39.0" layoutY="30.0" style="-fx-font-weight: bold;" text="Preencha os campos que deseja alterar:" textAlignment="CENTER" textFill="#f2e8c4">
+                     <font>
+                        <Font name="Arial" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="39.0" layoutY="95.0" style="&#10;" text="Nome: * " textAlignment="CENTER" textFill="#f2e8c4" wrapText="false">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="567.0" layoutY="95.0" style="&#10;" text="Email: * " textAlignment="CENTER" textFill="#f2e8c4" wrapText="false">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="323.0" layoutY="95.0" style="&#10;" text="Data de Nascimento: * " textAlignment="CENTER" textFill="#f2e8c4" wrapText="false">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="boxName" layoutX="39.0" layoutY="125.0" opacity="0.52" prefHeight="41.0" prefWidth="248.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </TextField>
+                  <TextField fx:id="boxEmail" layoutX="566.0" layoutY="124.0" opacity="0.52" prefHeight="41.0" prefWidth="205.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </TextField>
+                  <TextField fx:id="boxDate" layoutX="322.0" layoutY="124.0" opacity="0.52" prefHeight="41.0" prefWidth="213.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="-1.0" />
+                     </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </TextField>
+                  <Label alignment="CENTER" layoutX="803.0" layoutY="95.0" style="&#10;" text="Cpf: *" textAlignment="CENTER" textFill="#f2e8c4" wrapText="false">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="boxCPF" layoutX="802.0" layoutY="123.0" opacity="0.52" prefHeight="41.0" prefWidth="205.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </TextField>
+               </children>
+            </AnchorPane>
       </children>
     </AnchorPane>
   </children>
