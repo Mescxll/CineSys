@@ -4,6 +4,7 @@ import controller.business.ClientController;
 import controller.business.SessionController;
 import controller.business.TicketController;
 import controller.viewcontroller.SellTicketController;
+import exceptions.*;
 import controller.viewcontroller.PopUpDiscountController;
 import controller.viewcontroller.OversoldController;
 import controller.viewcontroller.PopUpRegisteredSaleController;
@@ -69,33 +70,21 @@ public class SellTicketController {
         try {
             int clientID = Integer.parseInt(clientId.getText());
             String paymentStr = paymentMethod.getText();
-
-            Client client = ClientController.getClientById(clientID);
-
-            // Valida se cliente foi encontrado
-            if (client == null ) {
-                showAlert("Selecione um cliente válido.");
-                return;
-            }
-
-            // Realiza a venda do ticket com base nas infos fornecidas
             Ticket ticket = TicketController.purchaseTicket(clientID, session.getId(), paymentStr);
 
             // Mostra o desconto aplicado
             double discount = ClientController.calculateDiscount(clientID);
             paymentMethod.clear();
             clientId.clear();
+            
             showDiscountPopup(discount);
 
-
-        } catch (NumberFormatException e) {
-            showAlert("ID do cliente inválido.");
-        } catch (IllegalArgumentException e) {
-            // Redireciona para tela de "lotado" se for o caso
+        } catch (NumberFormatException | ClientNotFoundException e) {
+            showAlert("Erro ao buscar cliente: " + e.getMessage());
+        } catch (CrowdedRoomException e) {
             MainViews.changeScreen("oversold", null);
-        } catch (RuntimeException e) {
-            // Redireciona para tela de "lotado" se for o caso
-            MainViews.changeScreen("oversold", null);
+        } catch (PaymentInvalidException e) {
+            showAlert("Erro ao processar o pagamento: " + e.getMessage());
         }
     }
 
