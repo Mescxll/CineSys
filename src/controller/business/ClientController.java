@@ -43,7 +43,7 @@ public class ClientController {
      * @return Mensagem de sucesso ou erro.
      */
     public static String updateClient(int id, String name, String cpf, String email, String birthday) {
-        return clientService.updateClient(id, name, email, birthday);
+        return clientService.updateClient(id, name, cpf, email, birthday);
     }
 
     /**

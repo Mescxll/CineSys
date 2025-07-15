@@ -65,7 +65,7 @@ public class SessionService {
         Session newSession = new Session(date, time, room, movie, ticketValue);
 
         // Verifica se já existe uma sessão com horário conflitante na mesma sala        
-        List<Session> sessionsInRoom = sessionRepository.getAll();
+        List<Session> sessionsInRoom = room.getSessions();
         for(int i = 0; i < sessionsInRoom.size(); i++){
             if( sessionsInRoom.get(i).getDate().equals(newSession.getDate()) &&
                 sessionsInRoom.get(i).getTime().equals(newSession.getTime())){
