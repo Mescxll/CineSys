@@ -20,12 +20,12 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label id="lblClient" alignment="TOP_LEFT" layoutX="127.0" layoutY="188.0" prefHeight="23.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Nome: " textFill="#f2e8c6">
+      <Label id="lblClient" alignment="TOP_LEFT" layoutX="127.0" layoutY="171.0" prefHeight="23.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Nome: " textFill="#f2e8c6">
          <font>
             <Font name="Arial" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="lnlNome" layoutX="192.0" layoutY="190.0" prefHeight="18.0" prefWidth="226.0" textFill="#f2e8c6">
+      <Label fx:id="lnlNome" layoutX="192.0" layoutY="173.0" prefHeight="18.0" prefWidth="226.0" textFill="#f2e8c6">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
@@ -70,7 +70,7 @@
             <Font name="Arial" size="16.0" />
          </font>
       </Label>
-      <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="555.0" layoutY="188.0" prefHeight="23.0" prefWidth="319.0" style="-fx-font-weight: bold;" text="Filmes e Sessões Assistidas: " textFill="#f2e8c6">
+      <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="555.0" layoutY="173.0" prefHeight="23.0" prefWidth="319.0" style="-fx-font-weight: bold;" text="Filmes e Sessões Assistidas: " textFill="#f2e8c6">
          <font>
             <Font name="Arial" size="18.0" />
          </font>
@@ -83,11 +83,21 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ScrollPane layoutX="555.0" layoutY="225.0" prefHeight="371.0" prefWidth="506.0">
+      <ScrollPane layoutX="555.0" layoutY="205.0" prefHeight="371.0" prefWidth="506.0">
          <content>
             <VBox fx:id="containerResultados" prefHeight="371.0" prefWidth="507.0" style="-fx-background-color: #03002C;" />
          </content>
       </ScrollPane>
+      <Label id="lblClient" alignment="TOP_LEFT" layoutX="127.0" layoutY="192.0" prefHeight="23.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="CPF: " textFill="#f2e8c6">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCpf" layoutX="184.0" layoutY="193.0" prefHeight="18.0" prefWidth="226.0" textFill="#f2e8c6">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </Label>
    </children>
    <rotationAxis>
       <Point3D />

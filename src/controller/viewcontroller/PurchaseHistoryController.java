@@ -168,6 +168,8 @@ public class PurchaseHistoryController implements Initializable {
         for (Client client : clientList) {
             Label labelNome = new Label("\nNome: " + client.getName());
             labelNome.setStyle("-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;");
+            Label labelCpf = new Label("ID: " + client.getCpf());
+            labelCpf.setStyle("-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;");
             Label labelId = new Label("ID: " + client.getId());
             labelId.setStyle("-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;");
 
@@ -182,7 +184,7 @@ public class PurchaseHistoryController implements Initializable {
 
             VBox caixaEntradaResultado = new VBox(5);
             caixaEntradaResultado.setPadding(new Insets(0, 0, 10, 0));
-            caixaEntradaResultado.getChildren().addAll(labelNome, labelId, botaoAcessar);
+            caixaEntradaResultado.getChildren().addAll(labelNome, labelCpf, labelId, botaoAcessar);
 
             containerResultados.getChildren().add(caixaEntradaResultado);
         }
