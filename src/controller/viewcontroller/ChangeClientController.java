@@ -28,6 +28,9 @@ public class ChangeClientController implements Initializable {
     @FXML
     private TextField boxName;
 
+    @FXML
+    private TextField boxCPF;
+
     /**
      * Inicializa o controlador.
      * 
@@ -38,8 +41,9 @@ public class ChangeClientController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Muda a cor do texto e do fundo dos campos de texto
         boxName.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
-        boxEmail.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
+        boxEmail.setStyle("-fx-text-fill: white !important; -fx-background-color: #ffffffff !important;");
         boxDate.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
+        boxCPF.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
 
         MainViews.addOnChangeScreenListener(new MainViews.OnChangeScreen() {
             @Override
@@ -49,6 +53,7 @@ public class ChangeClientController implements Initializable {
                     boxDate.setText(client.getBirthday());
                     boxEmail.setText(client.getEmail());
                     boxName.setText(client.getName());
+                    boxCPF.setText(client.getCpf());
                 }
             }
         });
@@ -74,11 +79,13 @@ public class ChangeClientController implements Initializable {
         String name = boxName.getText().trim();
         String email = boxEmail.getText().trim();
         String date = boxDate.getText().trim();
+        String cpf = boxCPF.getText().trim();
        
-        ClientController.updateClient(client.getId(), name, email, date);
+        ClientController.updateClient(client.getId(), name, cpf, email, date);
         boxName.clear();
         boxEmail.clear();
         boxDate.clear();
+        boxCPF.clear();
         ClientControlController.mostrarPopUp("alterado");
     }
 }

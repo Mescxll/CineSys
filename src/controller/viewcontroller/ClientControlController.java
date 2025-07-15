@@ -118,7 +118,10 @@ public class ClientControlController implements Initializable{
                     "-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;");
             Label labelEmail = new Label("Email: " + client.getEmail());
             labelEmail.setStyle(
-                    "-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;");        
+                    "-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;"); 
+            Label labelCpf = new Label("CPF: " + client.getCpf());
+            labelCpf.setStyle(
+                    "-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;");       
             Label labeldt = new Label("Data de Nascimento: " + client.getBirthday());
             labeldt.setStyle(
                     "-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;");   
@@ -156,7 +159,7 @@ public class ClientControlController implements Initializable{
 
             VBox caixaEntradaResultado = new VBox(5);
             caixaEntradaResultado.setPadding(new Insets(0, 0, 10, 0));
-            caixaEntradaResultado.getChildren().addAll(labelNome, labelId, labelEmail, labeldt, lblPoint, labelRelatory, botaoRel, botaoExcluir, botaoAlterar);
+            caixaEntradaResultado.getChildren().addAll(labelNome, labelId, labelEmail, labelCpf, labeldt, lblPoint, labelRelatory, botaoRel, botaoExcluir, botaoAlterar);
 
             containerResultados.getChildren().add(caixaEntradaResultado);
         }

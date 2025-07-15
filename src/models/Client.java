@@ -16,6 +16,7 @@ public class Client {
     private int id;
     private String name;
     private String email;
+    private String cpf;
     private LocalDate birthday;
     private int points;
     private List<Ticket> purchasingHistory;
@@ -27,8 +28,9 @@ public class Client {
      * @param email Email do cliente.
      * @param birthday Data de nascimento do cliente.
      */
-    public Client(String name, String email, LocalDate birthday) {
+    public Client(String name, String email, String cpf, LocalDate birthday) {
         this.name = name;
+        this.cpf = cpf;
         this.email = email;
         this.birthday = birthday;
         this.points = 0;
@@ -51,6 +53,14 @@ public class Client {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Obtém o cpf do cliente.
+     * @return O cpf do cliente.
+     */
+    public String getCpf() {
+        return cpf;
     }
 
     /**
@@ -113,6 +123,14 @@ public class Client {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Define o cpf do cliente.
+     * @param cpf O novo cpf do cliente.
+     */
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     /**

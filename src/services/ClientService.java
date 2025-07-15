@@ -14,6 +14,7 @@ import repository.ClientRepository;
  * @author Vinícius Nunes de Andrade
  * @author Thiago Ferreira Ribeiro
  * @author Kaique Silva Sousa
+ * @author Maria Eduarda Campos
  * @version 2.0
  * @since 11/06/2025
  */
@@ -28,13 +29,15 @@ public class ClientService {
      * Cria e adiciona um novo cliente ao sistema.
      *
      * @param name     Nome do cliente (não pode ser vazio).
+     * @param cpf      CPF do cliente (não pode ser vazio).
      * @param email    Email do cliente (não pode ser vazio).
-     * @param birthday Data de nascimento (não pode ser nula e deve ser no passado e no formato dd-mm-yyyy).
+     * @param birthday Data de nascimento (não pode ser nula e deve ser no passado e
+     *                 no formato dd-mm-yyyy).
      * @return Uma string falando que o cliente foi adicionado.
      * @throws IllegalArgumentException se algum dado estiver inválido.
      */
-    public String addClient(String name, String email, String birthday) {
-        if (name == null || birthday == null || email == null) {
+    public String addClient(String name, String cpf, String email, String birthday) {
+        if (name == null || birthday == null || email == null || cpf == null) {
             throw new IllegalArgumentException("Nome, data de nascimento e email não podem ser nulos.");
         } else if (name.isEmpty() || birthday.isEmpty() || email.isEmpty()) {
             throw new IllegalArgumentException("Nome, data de nascimento e email não podem ser vazios.");
@@ -42,10 +45,12 @@ public class ClientService {
             throw new IllegalArgumentException("Email inválido.");
         } else if (!birthday.matches("\\d{2}-\\d{2}-\\d{4}")) {
             throw new IllegalArgumentException("Data de nascimento deve estar no formato dd-mm-yyyy.");
+        } else if (!cpf.contains(".")&&!cpf.contains("-")) {
+            throw new IllegalArgumentException("Cpf inválido");
         }
 
         LocalDate birthDateParsed = LocalDate.parse(birthday, java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        clientRepository.add(new Client(name, email, birthDateParsed));
+        clientRepository.add(new Client(name, email, cpf, birthDateParsed));
 
         return "Cliente registrado com sucesso!";
     }
@@ -64,12 +69,14 @@ public class ClientService {
      *
      * @param id       do cliente a ser atualizado
      * @param name     Nome do cliente (não pode ser vazio).
+     * @param cpf      CPF do cliente (não pode ser vazio).
      * @param email    Email do cliente (não pode ser vazio).
-     * @param birthday Data de nascimento (não pode ser nula e deve ser no passado e no formato dd-mm-yyyy).
+     * @param birthday Data de nascimento (não pode ser nula e deve ser no passado e
+     *                 no formato dd-mm-yyyy).
      * @throws IllegalArgumentException se algum dado estiver inválido.
      * @return Uma string falando que o cliente foi atualizado.
      */
-    public String updateClient(int id, String name, String email, String birthday) {
+    public String updateClient(int id, String name, String cpf, String email, String birthday) {
         Client client = clientRepository.getById(id);
         if (client == null)
             throw new IllegalArgumentException("O cliente selecionado não existe!");
@@ -81,6 +88,8 @@ public class ClientService {
             throw new IllegalArgumentException("Email inválido.");
         } else if (!birthday.matches("\\d{2}-\\d{2}-\\d{4}")) {
             throw new IllegalArgumentException("Data de nascimento deve estar no formato dd-mm-yyyy.");
+        } else if (!cpf.contains(".") && !cpf.contains("-")) {
+            throw new IllegalArgumentException("Cpf inválido");
         }
 
         LocalDate birthDateParsed = LocalDate.parse(birthday, java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
@@ -89,6 +98,7 @@ public class ClientService {
         client.setName(name);
         client.setEmail(email);
         client.setBirthday(birthDateParsed);
+        client.setCpf(cpf);
 
         return "Cliente atualizado com sucesso!";
     }
