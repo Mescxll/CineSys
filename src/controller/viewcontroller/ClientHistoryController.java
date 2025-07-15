@@ -40,6 +40,9 @@ public class ClientHistoryController implements Initializable {
     @FXML
     private Label lnlNome;
 
+    @FXML
+    private Label lblCpf;
+
     /**
      * Volta para a tela anterior.
      * 
@@ -61,6 +64,7 @@ public class ClientHistoryController implements Initializable {
         // Limpa todos os labels com as informações do cliente
         if (lnlNome != null) lnlNome.setText("");
         if (lblID != null) lblID.setText("");
+        if (lblCpf != null) lblCpf.setText("");
         if (lblEmail != null) lblEmail.setText("");
         if (lblNascimento != null) lblNascimento.setText("");
         if (lblNumIngressos != null) lblNumIngressos.setText("");
@@ -95,6 +99,7 @@ public class ClientHistoryController implements Initializable {
     private void accessClientData(){
         
         lnlNome.setText(client.getName());
+        lblCpf.setText(client.getCpf());
         lblID.setText(client.getId()+"");
         lblEmail.setText(client.getEmail());
         lblNascimento.setText(client.getBirthday());
@@ -112,11 +117,6 @@ public class ClientHistoryController implements Initializable {
             Label labelEmpty = new Label(""); // Usado para espaçamento
             labelAccess.setStyle(
                     "-fx-text-fill: #f2e8c6 !important; -fx-font-family: Arial !important; -fx-font-size: 14px;");
-
-            //Image imagem = new Image("@../../assets/img/pasta_cor_BB0029.png");
-            //ImageView imageView = new ImageView(imagem);
-            //imageView.setFitWidth(40); 
-            //imageView.setFitHeight(40);
 
             Button botaoAcessar = new Button("Registro");
             botaoAcessar.setUserData(ticket);
