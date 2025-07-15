@@ -7,6 +7,7 @@ import models.Client;
 import models.Session;
 import models.Ticket;
 import repository.TicketRepository;
+import exceptions.*;
 
 import java.util.LinkedList;
 
@@ -18,7 +19,7 @@ import java.util.LinkedList;
  * @author Helen Santos Rocha
  * @author Thiago Ferreira Ribeiro
  * @since 11/06/2025
- * @version 1.0
+ * @version 1.1
  */
 public class TicketService {
     private final TicketRepository ticketRepository;
@@ -76,7 +77,7 @@ public class TicketService {
         // Buscar cliente
         Client client = ClientController.getClientById(clientId);
         if (client == null) {
-            throw new IllegalArgumentException("Cliente com ID " + clientId + " não encontrado.");
+            throw new ClientNotFoundException(clientId);
         }
 
         // Buscar sessão
@@ -85,7 +86,7 @@ public class TicketService {
             throw new IllegalArgumentException("Sessão com ID " + sessionId + " não encontrada.");
         }
         if (session.getTotalAvailableSeats() <= 0) {
-            throw new IllegalStateException("Não há assentos disponíveis para a sessão " + sessionId + ".");
+            throw new CrowdedRoomException(sessionId);
         }
 
         // Validar método de pagamento
@@ -93,7 +94,7 @@ public class TicketService {
         try {
             method = PaymentMethod.fromDescription(paymentMethod);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Método de pagamento inválido: " + paymentMethod);
+            throw new PaymentInvalidException(paymentMethod);
         }
 
         // Calcular desconto

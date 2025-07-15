@@ -7,6 +7,7 @@ import java.util.List;
 import models.Client;
 import models.Ticket;
 import repository.ClientRepository;
+import exceptions.*;
 
 /**
  * Classe de serviço responsável pela lógica de negócio dos clientes.
@@ -133,7 +134,7 @@ public class ClientService {
 
         Client client = clientRepository.getById(id);
         if (client == null) {
-            throw new RuntimeException("Nenhum cliente encontrado com o ID " + id);
+            throw new ClientNotFoundException(id);
         }
 
         return clientRepository.getById(id);
