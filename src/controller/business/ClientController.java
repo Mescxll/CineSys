@@ -18,25 +18,31 @@ public class ClientController {
     private static final ClientService clientService = new ClientService(new ClientRepository());
 
     /**
-     * Adiciona um novo cliente ao sistema chamando o método addClient da classe ClientService.
-     * @param name Nome do cliente.
-     * @param email Email do cliente.
+     * Adiciona um novo cliente ao sistema chamando o método addClient da classe
+     * ClientService.
+     * 
+     * @param name     Nome do cliente.
+     * @param cpf      CPF do cliente.
+     * @param email    Email do cliente.
      * @param birthday Data de nascimento do cliente.
      * @return Mensagem de sucesso ou erro.
-    */
-    public static String addClient(String name, String email, String birthday) {
-        return clientService.addClient(name, email, birthday);
+     */
+    public static String addClient(String name, String cpf, String email, String birthday) {
+        return clientService.addClient(name, cpf, email, birthday);
     }
 
     /**
-     * Atualiza um cliente existente chamando o método updateClient da classe ClientService.
-     * @param id ID do cliente a ser atualizado.
-     * @param name Nome do cliente.
-     * @param email Email do cliente.
+     * Atualiza um cliente existente chamando o método updateClient da classe
+     * ClientService.
+     * 
+     * @param id       ID do cliente a ser atualizado.
+     * @param name     Nome do cliente.
+     * @param cpf      CPF do cliente.
+     * @param email    Email do cliente.
      * @param birthday Data de nascimento do cliente.
      * @return Mensagem de sucesso ou erro.
-    */
-    public static String updateClient(int id, String name, String email, String birthday) {
+     */
+    public static String updateClient(int id, String name, String cpf, String email, String birthday) {
         return clientService.updateClient(id, name, email, birthday);
     }
 
