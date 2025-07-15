@@ -41,7 +41,7 @@ public class ChangeClientController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Muda a cor do texto e do fundo dos campos de texto
         boxName.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
-        boxEmail.setStyle("-fx-text-fill: white !important; -fx-background-color: #ffffffff !important;");
+        boxEmail.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         boxDate.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         boxCPF.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
 
