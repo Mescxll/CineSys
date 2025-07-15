@@ -92,7 +92,7 @@
                         <Font name="Arial" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="boxName" layoutX="39.0" layoutY="125.0" opacity="0.52" prefHeight="41.0" prefWidth="248.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
+                  <TextField fx:id="enterName" layoutX="39.0" layoutY="125.0" opacity="0.52" prefHeight="41.0" prefWidth="248.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
@@ -100,7 +100,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </TextField>
-                  <TextField fx:id="boxEmail" layoutX="566.0" layoutY="124.0" opacity="0.52" prefHeight="41.0" prefWidth="205.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
+                  <TextField fx:id="enterEmail" layoutX="566.0" layoutY="124.0" opacity="0.52" prefHeight="41.0" prefWidth="205.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
@@ -108,7 +108,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </TextField>
-                  <TextField fx:id="boxDate" layoutX="322.0" layoutY="124.0" opacity="0.52" prefHeight="41.0" prefWidth="213.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
+                  <TextField fx:id="enterDate" layoutX="322.0" layoutY="124.0" opacity="0.52" prefHeight="41.0" prefWidth="213.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
@@ -124,7 +124,7 @@
                         <Font name="Arial" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="boxCPF" layoutX="802.0" layoutY="123.0" opacity="0.52" prefHeight="41.0" prefWidth="205.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
+                  <TextField fx:id="enterCpf" layoutX="802.0" layoutY="123.0" opacity="0.52" prefHeight="41.0" prefWidth="205.0" style="-fx-background-color: #03002C; -fx-background-radius: 5px;">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>

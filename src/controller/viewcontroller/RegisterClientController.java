@@ -25,6 +25,8 @@ public class RegisterClientController implements Initializable {
     private TextField enterEmail;
     @FXML
     private TextField enterName;
+    @FXML
+    private TextField enterCpf;
 
     /**
      * inicializa mudando a cor do texto e do fundo dos campos de texto
@@ -38,6 +40,7 @@ public class RegisterClientController implements Initializable {
         enterName.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         enterEmail.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         enterDate.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
+        enterCpf.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
     }
 
     /**
@@ -60,14 +63,16 @@ public class RegisterClientController implements Initializable {
         String name = enterName.getText().trim();
         String email = enterEmail.getText().trim();
         String date = enterDate.getText().trim();
+        String cpf = enterCpf.getText().trim();
 
-        if (name.isEmpty() || email.isEmpty() || date.isEmpty()) {
+        if (name.isEmpty() || email.isEmpty() || date.isEmpty() || cpf.isEmpty()) {
             return;
         }else{
-            ClientController.addClient(name, email, date);
+            ClientController.addClient(name, cpf, email, date);
             enterName.clear();
             enterEmail.clear();
             enterDate.clear();
+            enterCpf.clear();
             ClientControlController.mostrarPopUp("cadastrado");
         }
     }
