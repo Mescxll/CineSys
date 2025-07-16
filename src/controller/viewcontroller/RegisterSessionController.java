@@ -49,7 +49,6 @@ public class RegisterSessionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Muda a cor do texto e do fundo dos campos de texto
         txtDate.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         txtMovieId.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         txtPrice.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");

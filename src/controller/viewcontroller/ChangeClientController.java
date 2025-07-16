@@ -19,17 +19,13 @@ import models.*;
 public class ChangeClientController implements Initializable {
     private static Client client;
 
-    @FXML
-    private TextField boxDate;
+    @FXML private TextField boxDate;
 
-    @FXML
-    private TextField boxEmail;
+    @FXML private TextField boxEmail;
 
-    @FXML
-    private TextField boxName;
+    @FXML private TextField boxName;
 
-    @FXML
-    private TextField boxCPF;
+    @FXML private TextField boxCPF;
 
     /**
      * Inicializa o controlador.
