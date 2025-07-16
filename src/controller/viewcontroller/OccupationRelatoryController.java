@@ -70,13 +70,13 @@ public class OccupationRelatoryController implements Initializable {
      * Método para resetar informações da tela quando o usuário sai dela
      */
     private void resetScreen() {
-        room = null; // Zera a referência à sala
-        selected = null; // Zera o filtro selecionado
+        room = null; 
+        selected = null; 
 
-        roomName.setText(""); // Limpa o nome da sala
-        totalSeat.setText(""); // Limpa o total de assentos
-        filterContainer.getChildren().clear(); // Remove todos os filtros exibidos
-        filterOccupation.getSelectionModel().clearSelection(); // Limpa seleção da ComboBox
+        roomName.setText(""); 
+        totalSeat.setText(""); 
+        filterContainer.getChildren().clear(); 
+        filterOccupation.getSelectionModel().clearSelection();
     }
 
     /**
@@ -125,7 +125,7 @@ public class OccupationRelatoryController implements Initializable {
      * Adiciona um filtro para a ocupação de salas.
      */
     public void addFilter() {
-        filter.clear(); // Limpa a lista para evitar duplicatas se o método for chamado novamente
+        filter.clear(); 
         filter.add("Filme");
         filter.add("Horário de Sessão");
 
@@ -135,18 +135,15 @@ public class OccupationRelatoryController implements Initializable {
         filterOccupation.setOnAction(event -> {
             String novoValorSelecionado = filterOccupation.getValue();
 
-            // --- GUARDA CONTRA LOOP INFINITO ---
-            // Se o novo valor for nulo ou igual ao valor já selecionado, não faz nada.
             if (novoValorSelecionado == null || novoValorSelecionado.equals(selected)) {
                 return;
             }
-            // ------------------------------------
 
-            selected = novoValorSelecionado; // Atualiza a seleção
+            selected = novoValorSelecionado; 
             System.out.println("Selecionado: " + selected);
 
             if (room != null) {
-                showFilter(); // Chama o método para mostrar o filtro
+                showFilter(); 
             } else {
                 System.err.println("Erro: Não foi possível aplicar filtro, 'room' é nulo.");
             }
@@ -178,7 +175,7 @@ public class OccupationRelatoryController implements Initializable {
             }
 
             sessoesList.stream()
-                    .collect(Collectors.groupingBy(Session::getMovie)) // Agrupa sessões pelo objeto Movie
+                    .collect(Collectors.groupingBy(Session::getMovie)) 
                     .forEach((movie, sessoesDoFilme) -> {
 
                         double totalOcupacao = 0;
@@ -202,7 +199,6 @@ public class OccupationRelatoryController implements Initializable {
                         System.out.println("Resumo do filme '" + movie.getTitle() + "' adicionado.");
                     });
         } else if ("Horário de Sessão".equals(selected)) {
-            // Encontrar todos os filmes únicos que têm sessões nesta sala
             List<Movie> moviesNaSala = new ArrayList<>();
             if (room != null && room.getSessions() != null && !room.getSessions().isEmpty()) {
                 for (Session session : room.getSessions()) {
@@ -212,17 +208,13 @@ public class OccupationRelatoryController implements Initializable {
                 }
             }
 
-            // VERIFICAÇÃO PRINCIPAL: Se não há filmes, exibe a mensagem e para.
             if (moviesNaSala.isEmpty()) {
                 Label noMoviesLabel = new Label("Não há sessões programadas para esta sala.");
                 noMoviesLabel.setStyle("-fx-text-fill: #f2e8c6; -fx-font-size: 14px; -fx-padding: 15px;");
                 filterContainer.getChildren().add(noMoviesLabel);
-                return; // Encerra a execução do método aqui
+                return; 
             }
 
-            // --- Se encontramos filmes, continuamos a construir a UI ---
-
-            // Definir estilos e criar componentes (como antes)
             String activeTabStyle = "-fx-background-color: #af0e2c; -fx-text-fill: #f2e8c6; -fx-background-radius: 5; -fx-font-weight: bold;";
             String inactiveTabStyle = "-fx-background-color: transparent; -fx-text-fill: #f2e8c6; -fx-font-size: 14px;";
 
@@ -242,7 +234,6 @@ public class OccupationRelatoryController implements Initializable {
             sessionDetailsContainer.setPadding(new Insets(15));
             sessionDetailsContainer.setStyle("-fx-background-color: #af0e2c; -fx-background-radius: 10; -fx-min-height: 200px;");
 
-            // Configurar as ações dos botões (como antes)
             for (Button btn : movieButtons) {
                 btn.setOnAction(event -> {
                     for (Button b : movieButtons) {
@@ -254,10 +245,8 @@ public class OccupationRelatoryController implements Initializable {
                 });
             }
 
-            // Ativa o primeiro filme por padrão
             movieButtons.getFirst().fire();
 
-            // Adiciona os componentes à tela
             filterContainer.getChildren().addAll(movieTabs, sessionDetailsContainer);
         }
     }
@@ -270,10 +259,9 @@ public class OccupationRelatoryController implements Initializable {
      * @param container O VBox onde as informações das sessões serão adicionadas.
      */
     private void displaySessionsForMovie(Movie movie, VBox container) {
-        container.getChildren().clear(); // Limpa a lista de sessões anterior
+        container.getChildren().clear();
         List<Session> sessoesDoFilme = MovieController.getSessionsByMovie(movie.getId());
 
-        // Verifica se a busca retornou alguma sessão
         if (sessoesDoFilme == null || sessoesDoFilme.isEmpty()) {
             Label noSessionsLabel = new Label("Não há sessões programadas para este filme.");
             noSessionsLabel.setStyle("-fx-text-fill: #f2e8c6;");
@@ -285,7 +273,6 @@ public class OccupationRelatoryController implements Initializable {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        // 2. Itera sobre a lista retornada pelo MovieController.
         for (Session session : sessoesDoFilme) {
 
             String dataFormatada = session.getDate();
