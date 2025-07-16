@@ -40,12 +40,12 @@ public class EditMovieController implements Initializable{
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Muda a cor do texto e do fundo dos campos de texto
         titleField.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         genreField.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         durationField.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         ratingField.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
         synopsisField.setStyle("-fx-text-fill: white !important; -fx-background-color: #03002C !important;");
+        
         MainViews.addOnChangeScreenListener(new MainViews.OnChangeScreen() {
             @Override
             public void onScreenChanged(String newScreen, Object userDataObject) {
