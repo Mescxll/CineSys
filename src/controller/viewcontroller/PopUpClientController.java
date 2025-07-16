@@ -15,9 +15,7 @@ import controller.viewcontroller.MainViews;
  */
 public class PopUpClientController {
 
-    @FXML
-    private Label lblMsg;
-
+    @FXML private Label lblMsg;
     private Stage stage;
 
     /**
@@ -45,5 +43,4 @@ public class PopUpClientController {
         MainViews.changeScreen("clientControl", null);
         stage.close();
     }
-
 }

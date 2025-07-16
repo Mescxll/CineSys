@@ -21,6 +21,7 @@ import controller.business.MovieController;
  * Classe responsável por controlar a tela de cadastro de um filme.
  * 
  * @author Gabryelle Beatriz Duarte Moraes
+ * @author Maria Eduarda Campos
  * @since 01/06/2024
  * @version 2.0
  */
