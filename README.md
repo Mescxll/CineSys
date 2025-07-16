@@ -1,4 +1,4 @@
-# CineSys VIII
+# CineSys VIII - Controle de Sessões de Cinema
 Projeto adaptado para disciplina de Linguagem de Programação II. Por: Maria Eduarda Campos, Vinicius Nunes de Andrade e Thiago Ferreira Ribeiro.
 
 ### Projeto Original
