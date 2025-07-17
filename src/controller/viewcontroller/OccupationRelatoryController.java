@@ -1,15 +1,13 @@
 package controller.viewcontroller;
 
 import java.net.URL;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import controller.business.MovieController;
-import controller.business.RoomController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,7 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import java.time.LocalDate;
+
 import java.util.stream.Collectors;
 
 import javafx.event.ActionEvent;
@@ -252,7 +250,7 @@ public class OccupationRelatoryController implements Initializable {
     }
 
     /**
-     * Limpa o contêiner de detalhes e exibe uma lista de todas as sessões
+     * Limpa o contêiner de detalhes e exibe uma lista de todas as sessões naquela sala
      * para um filme específico, buscando os dados através do MovieController.
      *
      * @param movie O filme cujas sessões serão exibidas.
@@ -261,8 +259,13 @@ public class OccupationRelatoryController implements Initializable {
     private void displaySessionsForMovie(Movie movie, VBox container) {
         container.getChildren().clear();
         List<Session> sessoesDoFilme = MovieController.getSessionsByMovie(movie.getId());
+        List<Session> sessoesDoFilmeNaSala = new LinkedList<>();
+        for (Session session : sessoesDoFilme) {
+            if (room.getSessions().contains(session))
+                sessoesDoFilmeNaSala.add(session);
+        }
 
-        if (sessoesDoFilme == null || sessoesDoFilme.isEmpty()) {
+        if (sessoesDoFilmeNaSala.isEmpty()) {
             Label noSessionsLabel = new Label("Não há sessões programadas para este filme.");
             noSessionsLabel.setStyle("-fx-text-fill: #f2e8c6;");
             container.getChildren().add(noSessionsLabel);
@@ -273,7 +276,7 @@ public class OccupationRelatoryController implements Initializable {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        for (Session session : sessoesDoFilme) {
+        for (Session session : sessoesDoFilmeNaSala) {
 
             String dataFormatada = session.getDate();
             String horaFormatada = session.getTime();
