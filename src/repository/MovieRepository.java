@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.sun.tools.jdeprscan.DeprDB.loadFromFile;
 
 /**
  * Classe que manipula diretamente a lista de filmes.
