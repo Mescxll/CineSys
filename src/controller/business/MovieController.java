@@ -15,7 +15,7 @@ import java.util.LinkedList;
  */
 public class MovieController {
 
-    private static final MovieService movieService = new MovieService(new MovieRepository());
+    private static final MovieService movieService = new MovieService(new MovieRepository(true));
 
     /**
      * adiciona um filme chamando o método addMovie da classe MovieService.

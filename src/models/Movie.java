@@ -37,6 +37,23 @@ public class Movie {
 	}
 
 	/**
+	 * Construtor para RECONSTRUIR filmes a partir de dados salvos.
+	 * Recebe o ID existente do arquivo.
+	 */
+	public Movie(int id, String title, String genre, int duration, String classification, String synopsis) {
+		this.id = id;
+		this.title = title;
+		this.genre = genre;
+		this.duration = duration;
+		this.classification = classification;
+		this.synopsis = synopsis;
+
+		if (id >= _idGenerator) {
+			_idGenerator = id + 1;
+		}
+	}
+
+	/**
 	 * Obtém o ID único do filme.
 	 * 
 	 * @return O ID do filme
