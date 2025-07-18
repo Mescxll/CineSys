@@ -23,36 +23,44 @@ import java.util.Scanner;
  * Pode operar em modo de memória ou com persistência em arquivo de texto.
  *
  * @author Thiago Ferreira Ribeiro
+ * @author Vinícius Nunes de Andrade
  * @since 11/06/2025
- * @version 3.0
+ * @version 3.1
  */
 public class SessionRepository {
     private final List<Session> sessions;
     private final String FILE_PATH = "data/sessions.txt";
     private final boolean useFilePersistence;
 
-    /**
-     * Construtor padrão. Opera em modo de memória, ideal para testes.
-     */
-    public SessionRepository() {
-        this(false);
-    }
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     /**
-     * Construtor principal que define o modo de operação.
+     * Construtor padrão que inicializa o repositório em modo de memória.
+     */
+    public SessionRepository() { this(false); }
+
+    /**
+     * Construtor principal que define o modo de operação do repositório.
      *
-     * @param useFilePersistence Se true, o repositório lerá e salvará em arquivo.
+     * @param useFilePersistence Se 'true', o repositório lerá e salvará dados
+     * em um arquivo de texto. Se 'false', operará
+     * apenas em memória.
      */
     public SessionRepository(boolean useFilePersistence) {
         this.sessions = new LinkedList<>();
         this.useFilePersistence = useFilePersistence;
-
         if (this.useFilePersistence) {
             ensureDataFileExists();
             loadFromFile();
         }
     }
 
+    /**
+     * Garante que o diretório 'data' e o arquivo de sessões existam no disco.
+     * Se não existirem, eles são criados para evitar erros de "Arquivo Não Encontrado"
+     * na primeira execução da aplicação.
+     */
     private void ensureDataFileExists() {
         try {
             File dataDir = new File("data");
@@ -64,17 +72,23 @@ public class SessionRepository {
         }
     }
 
+    /**
+     * Carrega todas as sessões do arquivo de texto para a lista em memória.
+     * Este método é chamado pelo construtor quando a persistência em arquivo está
+     * ativada. Ele analisa cada linha do arquivo, reconstrói os objetos 'Session'
+     * e suas dependências (Room e Movie).
+     */
     private void loadFromFile() {
         try (Scanner fileScanner = new Scanner(new File(FILE_PATH))) {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 if (line.trim().isEmpty()) continue;
-
                 String[] parts = line.split(";");
                 if (parts.length >= 7) {
                     int sessionId = Integer.parseInt(parts[0]);
-                    LocalDate date = LocalDate.parse(parts[1]);
-                    LocalTime time = LocalTime.parse(parts[2]);
+                    LocalDate date = LocalDate.parse(parts[1], DATE_FORMATTER);
+                    LocalTime time = LocalTime.parse(parts[2], TIME_FORMATTER);
+
                     int roomId = Integer.parseInt(parts[3]);
                     int movieId = Integer.parseInt(parts[4]);
                     double ticketValue = Double.parseDouble(parts[5]);
@@ -86,27 +100,28 @@ public class SessionRepository {
                     if (room != null && movie != null) {
                         Session session = new Session(sessionId, date, time, room, movie, ticketValue, totalAvailableSeats);
                         this.sessions.add(session);
-                    } else {
-                        System.err.println("Erro ao carregar sessão: Sala ou Filme com ID não encontrado. Linha: " + line);
                     }
                 }
             }
-            System.out.println("Sessões carregadas do arquivo: " + FILE_PATH);
         } catch (Exception e) {
             System.err.println("Erro ao carregar ou analisar o arquivo de sessões: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
+    /**
+     * Salva a lista de sessões em memória de volta para o arquivo de texto.
+     */
     private void saveToFile() {
         if (!useFilePersistence) return;
 
-        try (PrintWriter writer = new PrintWriter(new File(FILE_PATH))) {
+        try (PrintWriter writer = new PrintWriter(FILE_PATH)) {
             for (Session session : this.sessions) {
-                // Formato: sessionId;data;hora;salaId;filmeId;valorIngresso;assentosDisponiveis
-                String line = String.format("%d;%s;%s;%d;%d;%f;%d",
+
+                String line = String.format(java.util.Locale.US, "%d;%s;%s;%d;%d;%f;%d",
                         session.getId(),
-                        session.getDate().toString(), // Salva em formato AAAA-MM-DD
-                        session.getTime().toString(), // Salva em formato HH:mm ou HH:mm:ss
+                        session.getDate(),
+                        session.getTime(),
                         session.getRoom().getId(),
                         session.getMovie().getId(),
                         session.getTicketValue(),
@@ -117,7 +132,6 @@ public class SessionRepository {
             System.err.println("Erro ao salvar sessões no arquivo: " + e.getMessage());
         }
     }
-
 
     /**
      * Adiciona uma nova sessão à lista e salva no arquivo.
@@ -137,9 +151,7 @@ public class SessionRepository {
      */
     public Session getById(int id) {
         for (Session session : sessions) {
-            if (session.getId() == id) {
-                return session;
-            }
+            if (session.getId() == id) return session;
         }
         return null;
     }
@@ -175,9 +187,6 @@ public class SessionRepository {
 
     /**
      * Retorna todas as sessões agendadas para uma dada data.
-     *
-     * @param date A data pela qual se quer filtrar as sessões.
-     * @return Uma lista contendo todas as sessões da data informada.
      */
     public LinkedList<Session> getByDate(LocalDate date) {
         LinkedList<Session> sessionsByDate = new LinkedList<>();

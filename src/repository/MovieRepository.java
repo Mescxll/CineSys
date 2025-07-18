@@ -6,14 +6,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-
 /**
- * Classe que manipula diretamente a lista de filmes.
+ * Classe que gerencia a coleção de filmes, com persistência em arquivo.
  * Pode operar em modo de memória ou com arquivo de texto.
+ *
  * @author Vinícius Nunes de Andrade
  * @author Thiago Ferreira Ribeiro
  * @since 11/06/2025
@@ -86,8 +87,9 @@ public class MovieRepository {
     private void saveToFile() {
         if (!useFilePersistence) return;
 
-        try (PrintWriter writer = new PrintWriter(FILE_PATH)) {
+        try (PrintWriter writer = new PrintWriter(new File(FILE_PATH))) {
             for (Movie movie : this.movies) {
+                // Formato: id;titulo;genero;duracao;classificacao;sinopse
                 String line = String.format("%d;%s;%s;%d;%s;%s",
                         movie.getId(),
                         movie.getTitle(),
@@ -103,57 +105,55 @@ public class MovieRepository {
     }
 
     /**
-     * Adiciona um filme à lista de filmes
-     * 
-     * @param movie O filme que será adicionado à lista.
+     * Adiciona um filme à lista e salva no arquivo.
+     *
+     * @param movie O filme a ser adicionado.
      */
-    public void add(Movie movie){
-        try {
-            movies.add(movie);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void add(Movie movie) {
+        movies.add(movie);
+        saveToFile();
     }
 
     /**
-     * Retorna um filme a partir do ID
-     * 
+     * Retorna um filme a partir do ID de forma eficiente.
+     *
      * @param id O identificador único do filme.
-     * @return O filme com o ID fornecido ou {@code null} se não for encontrado
+     * @return O filme com o ID fornecido ou null se não for encontrado.
      */
-    public Movie getById(int id){
-        for(int i = 0; i < movies.size(); i++){
-            if (movies.get(i).getId() == id) {
-                return movies.get(i);
+    public Movie getById(int id) {
+        for (Movie movie : movies) {
+            if (movie.getId() == id) {
+                return movie;
             }
         }
         return null;
     }
 
     /**
-     * Atualiza um filme selecionado
+     * Atualiza um filme selecionado e salva no arquivo.
      *
-     * @param id do filme a ser atualizado
-     * @param movie nova sessão que será atualizada
+     * @param id O ID do filme a ser atualizado.
+     * @param updatedMovie O objeto filme com as novas informações.
      */
-    public void update(int id, Movie movie){
-        if(getById(id) == null)
-            throw new IllegalArgumentException("Sessão não existe!");
-        movies.set(getIndex(id), movie);
+    public void update(int id, Movie updatedMovie) {
+        int index = getIndex(id);
+        if (index == -1) {
+            throw new IllegalArgumentException("Filme com ID " + id + " não existe!");
+        }
+        movies.set(index, updatedMovie);
+        saveToFile();
     }
 
     /**
-     * Método auxiliar para pegar o index de um certo filme
-     *
-     * @param id da sessão
-     * @return se o id existir, retorna o index requerido
-     *         caso não existe, retorna -1
+     * Método auxiliar para pegar o índice de um certo filme.
      */
-    private int getIndex(int id){
-        for(int i = 0; i < movies.size(); i++){
-            if(movies.get(i).getId() == id){
-                return i;
+    private int getIndex(int id) {
+        int index = 0;
+        for (Movie movie : movies) {
+            if (movie.getId() == id) {
+                return index;
             }
+            index++;
         }
         return -1;
     }
@@ -168,15 +168,18 @@ public class MovieRepository {
     }
 
     /**
-     * Remove um filme da lista com base no ID fornecido.
-     * 
-     * @param id O identificador único do filme a ser removido.
-     * @return {@code true} se o filme foi encontrado e removido; {@code false} caso contrário.
+     * Remove um filme da lista com base no ID e salva no arquivo.
+     *
+     * @param id O ID do filme a ser removido.
+     * @return true se o filme foi encontrado e removido; false caso contrário.
      */
-    public boolean removeById(int id){
-        for(int i = 0; i < movies.size(); i++){
-            if (movies.get(i).getId() == id) {
-                movies.remove(i);
+    public boolean removeById(int id) {
+        Iterator<Movie> iterator = movies.iterator();
+        while (iterator.hasNext()) {
+            Movie movie = iterator.next();
+            if (movie.getId() == id) {
+                iterator.remove();
+                saveToFile();
                 return true;
             }
         }
@@ -186,12 +189,12 @@ public class MovieRepository {
     /**
      * Retorna um filme com o mesmo nome fornecido.
      *
-     * @param name nome do filme
-     * @return filme com o mesmo nome
+     * @param name nome do filme a ser buscado.
+     * @return O filme encontrado ou null.
      */
-    public Movie getMovieByName(String name){
-        for (Movie movie : movies){
-            if(movie.getTitle().trim().equalsIgnoreCase(name.trim())){
+    public Movie getMovieByName(String name) {
+        for (Movie movie : movies) {
+            if (movie.getTitle().trim().equalsIgnoreCase(name.trim())) {
                 return movie;
             }
         }
@@ -199,9 +202,10 @@ public class MovieRepository {
     }
 
     /**
-     * Remove todos os filmes da lista.
+     * Remove todos os filmes da lista e salva o estado vazio no arquivo.
      */
-    public void clear(){
+    public void clear() {
         movies.clear();
+        saveToFile();
     }
 }
