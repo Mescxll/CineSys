@@ -15,7 +15,17 @@ import java.util.LinkedList;
  */
 public class MovieController {
 
-    private static final MovieService movieService = new MovieService(new MovieRepository(true));
+    private static MovieService movieService = new MovieService(new MovieRepository(true));
+
+    /**
+     * Método para inicializar o controller com suas dependências.
+     * Deve ser chamado no início da aplicação.
+     */
+    public static void initialize(MovieRepository repository) {
+        if (movieService == null) {
+            movieService = new MovieService(repository);
+        }
+    }
 
     /**
      * adiciona um filme chamando o método addMovie da classe MovieService.
