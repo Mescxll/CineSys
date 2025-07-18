@@ -76,6 +76,16 @@ public class SessionController {
     }
 
     /**
+     * Pede ao repositório para salvar o estado atual de um objeto de sessão.
+     * Útil quando o estado da sessão (como assentos disponíveis) é modificado por outro serviço.
+     *
+     * @param session O objeto sessão com seu estado atualizado.
+     */
+    public static void updateSession(Session session) {
+        sessionService.updateSession(session);
+    }
+
+    /**
      * Pega uma sessão pelo ID.
      * @param id ID da sessão a ser buscada.
      * @return A sessão encontrada, ou {@code null} se não existir.

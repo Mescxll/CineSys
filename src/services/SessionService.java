@@ -176,6 +176,19 @@ public class SessionService {
     }
 
     /**
+     * Atualiza o estado de uma sessão existente no repositório.
+     *
+     * @param sessionToUpdate O objeto Session com os dados já atualizados.
+     * @throws IllegalArgumentException se a sessão fornecida for nula.
+     */
+    public void updateSession(Session sessionToUpdate) {
+        if (sessionToUpdate == null) {
+            throw new IllegalArgumentException("A sessão a ser atualizada não pode ser nula.");
+        }
+        sessionRepository.update(sessionToUpdate);
+    }
+
+    /**
      * Retorna a sessão correspondente ao ID fornecido.
      *
      * @param id Código identificador da sessão.

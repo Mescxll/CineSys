@@ -65,7 +65,6 @@ public class TicketRepository {
 
     /**
      * Carrega todos os tickets do arquivo de texto para a lista em memória.
-     * <p>
      * Este método é chamado pelo construtor quando a persistência em arquivo está
      * ativada. Ele lê cada linha do arquivo, analisa os dados, reconstrói
      * os objetos 'Ticket' com suas dependências (Cliente e Sessão) e os
@@ -90,7 +89,10 @@ public class TicketRepository {
 
                     if (client != null && session != null) {
                         Ticket ticket = new Ticket(ticketId, client, session, finalPrice, paymentMethod);
+
                         this.tickets.add(ticket);
+
+                        client.addTicketToHistory(ticket);
                     } else {
                         System.err.println("Erro ao carregar ticket: Cliente ou Sessão com ID não encontrado. Linha: " + line);
                     }
@@ -101,7 +103,6 @@ public class TicketRepository {
             System.err.println("Erro ao carregar ou analisar o arquivo de tickets: " + e.getMessage());
         }
     }
-
     /**
      * Salva a lista de tickets em memória de volta para o arquivo de texto.
      * Este método é chamado sempre que há uma alteração na lista de tickets

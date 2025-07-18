@@ -167,18 +167,19 @@ public class SessionRepository {
     }
 
     /**
-     * Atualiza uma sessão existente na lista.
-     * Encontra a sessão pelo ID e a substitui pela nova versão.
+     * Atualiza uma sessão na lista, encontrando-a pelo ID do objeto fornecido.
+     * Após a atualização na memória, salva o estado completo no arquivo.
      *
-     * @param sessionToUpdate O objeto sessão com os dados atualizados.
+     * @param sessionToUpdate O objeto Sessão com as informações atualizadas.
      */
     public void update(Session sessionToUpdate) {
+        if (sessionToUpdate == null) return;
         int index = getIndex(sessionToUpdate.getId());
         if (index != -1) {
             sessions.set(index, sessionToUpdate);
-            saveToFile(); // Salva o estado atualizado no arquivo
+            saveToFile();
         } else {
-            System.err.println("Tentativa de atualizar uma sessão que não foi encontrada no repositório. ID: " + sessionToUpdate.getId());
+            System.err.println("Aviso: Tentativa de atualizar uma sessão (ID: " + sessionToUpdate.getId() + ") que não existe no repositório.");
         }
     }
 

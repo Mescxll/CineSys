@@ -72,6 +72,22 @@ public class TicketService {
         ticketRepository.removeById(id);
     }
 
+    /**
+     * Orquestra o processo completo de compra de um ingresso.
+     * <p>
+     * Este método valida o cliente e a sessão, calcula o preço com desconto,
+     * cria o ticket, atualiza o histórico e pontos do cliente, e decrementa
+     * os assentos disponíveis na sessão, persistindo todas as alterações.
+     *
+     * @param clientId O ID do cliente que está comprando.
+     * @param sessionId O ID da sessão desejada.
+     * @param paymentMethod O método de pagamento em formato de String.
+     * @return O objeto Ticket que foi criado e salvo.
+     * @throws ClientNotFoundException se o cliente não for encontrado.
+     * @throws IllegalArgumentException se a sessão não for encontrada.
+     * @throws CrowdedRoomException se não houver assentos disponíveis.
+     * @throws PaymentInvalidException se o método de pagamento for inválido.
+     */
     public Ticket purchaseTicket(int clientId, int sessionId, String paymentMethod) {
 
         // Buscar cliente
@@ -99,20 +115,21 @@ public class TicketService {
 
         // Calcular desconto
         double discount = ClientController.calculateDiscount(clientId);
-        double basePrice = 20.0; // Pode ser dinâmico no futuro
-        double precoFinal = basePrice * (1 - discount / 100.0);
+        double basePrice = session.getTicketValue();
+        double finalPrice = basePrice * (1 - discount / 100.0);
 
-        // Criar ticket com desconto
-        Ticket ticket = new Ticket(client, session, precoFinal, method);
+        Ticket ticket = new Ticket(client, session, finalPrice, method);
 
-        // Adicionar ticket no repositório
+        // Adiciona o novo ticket ao seu próprio repositório (ex: tickets.txt)
         ticketRepository.add(ticket);
 
-        // Atualizar fidelidade do cliente, nesse método ele também adiciona o ticket no histórico do cliente.
+        // Atualiza o cliente (adiciona o ticket ao histórico e registra os pontos)
         ClientController.registerPoints(clientId, ticket);
 
         // Atualizando assentos disponíveis da sessão
         session.setTotalAvailableSeats(session.getTotalAvailableSeats()-1);
+
+        SessionController.updateSession(session);
 
         return ticket;
     }
