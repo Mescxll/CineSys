@@ -35,6 +35,29 @@ public class Ticket {
     }
 
     /**
+     * Construtor para reconstruir tickets a partir de dados salvos.
+     * Ele recebe o ID existente do arquivo e ajusta o gerador de IDs.
+     *
+     * @param id O ID existente do ticket (lido do arquivo).
+     * @param client O cliente que comprou o ingresso.
+     * @param session A sessão para a qual o ingresso é válido.
+     * @param finalPrice O preço final do ingresso.
+     * @param paymentMethod O método de pagamento utilizado.
+     */
+    public Ticket(int id, Client client, Session session, double finalPrice, PaymentMethod paymentMethod) {
+        this.id = id;
+        this.client = client;
+        this.session = session;
+        this.finalPrice = finalPrice;
+        this.paymentMethod = paymentMethod;
+
+        // Garante que o próximo ID gerado seja sempre maior que o maior ID carregado
+        if (id >= _idGenerator) {
+            _idGenerator = id + 1;
+        }
+    }
+
+    /**
      * Retorna o próximo ID a ser gerado.
      *
      * @return O próximo ID.
