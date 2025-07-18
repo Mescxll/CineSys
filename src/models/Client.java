@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Classe que representa um cliente.
- * 
+ *
  * @author Maria Eduarda Campos
  * @since 25/05/2025
  * @version 5.0
@@ -20,10 +20,10 @@ public class Client {
     private LocalDate birthday;
     private int points;
     private List<Ticket> purchasingHistory;
-    
+
     /**
      * Construtor da classe Client.
-     * 
+     *
      * @param name Nome do cliente.
      * @param email Email do cliente.
      * @param birthday Data de nascimento do cliente.
@@ -39,8 +39,26 @@ public class Client {
     }
 
     /**
+     * Construtor para reconstruir clientes a partir de dados salvos.
+     * Ele recebe o ID existente do arquivo e ajusta o gerador de IDs.
+     */
+    public Client(int id, String name, String email, String cpf, LocalDate birthday) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.cpf = cpf;
+        this.birthday = birthday;
+        this.points = 0;
+        this.purchasingHistory = new LinkedList<>();
+
+        if (id >= _idGenerator) {
+            _idGenerator = id + 1;
+        }
+    }
+
+    /**
      * Obtém o ID do cliente.
-     * 
+     *
      * @return O ID do cliente.
      */
     public int getId() {
@@ -191,10 +209,10 @@ public class Client {
      */
     @Override
     public String toString() {
-        return "Client " + id + ":" + 
-        "\nName= " + name + 
-        "\nEmail= "+ email + 
-        "\nBirthday= "+ birthday + 
+        return "Client " + id + ":" +
+        "\nName= " + name +
+        "\nEmail= "+ email +
+        "\nBirthday= "+ birthday +
         "\nPurchasing History= " + purchasingHistory;
     }
 
