@@ -15,11 +15,21 @@ import services.SessionService;
  * Classe de controle responsável pela lógica de negócio das sessões de cinema.
  * @author Kaique Silva Sousa
  * @since 11/06/2023
- * @version 1.0
+ * @version 2.0
  */
 public class SessionController {
 
-    private static final SessionService sessionService = new SessionService(new SessionRepository(true));
+    private static SessionService sessionService = new SessionService(new SessionRepository(true));
+
+    /**
+     * Método para inicializar o controller com suas dependências.
+     * Deve ser chamado no início da aplicação.
+     */
+    public static void initialize(SessionRepository repository) {
+        if (sessionService == null) {
+            sessionService = new SessionService(repository);
+        }
+    }
 
     /**
      * Adiciona uma nova sessão ao sistema.
