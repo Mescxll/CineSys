@@ -1,10 +1,13 @@
 package controller.viewcontroller;
 
+import controller.business.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import repository.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +16,7 @@ import java.util.List;
  * @author Maria Eduarda Campos
  * @author Vinicius Nunes de Andrade
  * @since 31-05-2025
- * @version 2
+ * @version 3.0
  */
 public class MainViews extends Application {
     private static Stage stage;
@@ -253,10 +256,36 @@ public class MainViews extends Application {
      * * @param args
      */
     public static void main(String[] args) {
+        initializeDataLayer();
         launch(args);
     }
 
-    // Processamento de Dados na Troca de Tela
+    /**
+     * Inicializa todos os repositórios e controllers de negócio na ordem correta
+     * de dependência para garantir que a persistência de dados funcione corretamente.
+     */
+    public static void initializeDataLayer() {
+        System.out.println("--- INICIALIZANDO CAMADA DE DADOS (COM ARQUIVOS) ---");
+        try {
+            Class.forName("controller.business.RoomController");
+            Class.forName("controller.business.MovieController"); // Supondo que MovieController siga o mesmo padrão
+        } catch (ClassNotFoundException e) {
+            System.err.println("Erro crítico: Não foi possível inicializar os controllers base.");
+            e.printStackTrace();
+            return;
+        }
+        ClientRepository clientRepo = new ClientRepository(true);
+        SessionRepository sessionRepo = new SessionRepository(true);
+
+        ClientController.initialize(clientRepo);
+        SessionController.initialize(sessionRepo);
+
+        TicketRepository ticketRepo = new TicketRepository(true);
+
+        TicketController.initialize(ticketRepo);
+
+        System.out.println("--- CAMADA DE DADOS INICIALIZADA COM SUCESSO ---");
+    }
     private static List<OnChangeScreen> listeners = new ArrayList<>();
 
     /**

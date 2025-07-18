@@ -13,10 +13,7 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Classe que gerencia as sessões (Session) do cinema.
@@ -88,7 +85,6 @@ public class SessionRepository {
                     int sessionId = Integer.parseInt(parts[0]);
                     LocalDate date = LocalDate.parse(parts[1], DATE_FORMATTER);
                     LocalTime time = LocalTime.parse(parts[2], TIME_FORMATTER);
-
                     int roomId = Integer.parseInt(parts[3]);
                     int movieId = Integer.parseInt(parts[4]);
                     double ticketValue = Double.parseDouble(parts[5]);
@@ -105,7 +101,6 @@ public class SessionRepository {
             }
         } catch (Exception e) {
             System.err.println("Erro ao carregar ou analisar o arquivo de sessões: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -114,14 +109,15 @@ public class SessionRepository {
      */
     private void saveToFile() {
         if (!useFilePersistence) return;
-
         try (PrintWriter writer = new PrintWriter(FILE_PATH)) {
             for (Session session : this.sessions) {
+                String formattedDate = session.getDate();
+                String formattedTime = session.getTime();
 
-                String line = String.format(java.util.Locale.US, "%d;%s;%s;%d;%d;%f;%d",
+                String line = String.format(Locale.US, "%d;%s;%s;%d;%d;%f;%d",
                         session.getId(),
-                        session.getDate(),
-                        session.getTime(),
+                        formattedDate,
+                        formattedTime,
                         session.getRoom().getId(),
                         session.getMovie().getId(),
                         session.getTicketValue(),
@@ -190,10 +186,11 @@ public class SessionRepository {
      */
     public LinkedList<Session> getByDate(LocalDate date) {
         LinkedList<Session> sessionsByDate = new LinkedList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String dateString = date.format(formatter);
+
+        String dateToCompare = date.format(DATE_FORMATTER);
+
         for (Session session : sessions) {
-            if (session.getDate().equals(dateString)) {
+            if (session.getDate().equals(dateToCompare)) {
                 sessionsByDate.add(session);
             }
         }
