@@ -11,11 +11,21 @@ import java.util.LinkedList;
  *
  * @author Vinícius Nunes de Andrade 
  * @author Kaique Silva Sousa
- * @version 1.0
+ * @version 2.0
  * @since 13-06-2025
  */
 public class TicketController {
-    private static final TicketService ticketService = new TicketService(new TicketRepository(true));
+    private static TicketService ticketService;
+
+    /**
+     * Método para inicializar o controller com suas dependências.
+     * Deve ser chamado no início da aplicação.
+     */
+    public static void initialize(TicketRepository repository) {
+        if (ticketService == null) {
+            ticketService = new TicketService(repository);
+        }
+    }
 
     /**
      * Método responsável por realizar uma compra de um ingresso.
