@@ -11,11 +11,21 @@ import java.util.LinkedList;
  * Classe de controle para a lógica de negócio dos clientes.
  * @author Kaique Silva Sousa 
  * @since 11/06/2025
- * @version 1.0
+ * @version 2.0
  */
 public class ClientController {
     
-    private static final ClientService clientService = new ClientService(new ClientRepository(true));
+    private static ClientService clientService = new ClientService(new ClientRepository(true));
+
+    /**
+     * Método para inicializar o controller com suas dependências.
+     * Deve ser chamado no início da aplicação.
+     */
+    public static void initialize(ClientRepository repository) {
+        if (clientService == null) {
+            clientService = new ClientService(repository);
+        }
+    }
 
     /**
      * Adiciona um novo cliente ao sistema chamando o método addClient da classe
