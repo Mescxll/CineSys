@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * @since 13-06-2025
  */
 public class TicketController {
-    private static final TicketService ticketService = new TicketService(new TicketRepository());
+    private static final TicketService ticketService = new TicketService(new TicketRepository(true));
 
     /**
      * Método responsável por realizar uma compra de um ingresso.
