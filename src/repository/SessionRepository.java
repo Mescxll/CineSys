@@ -73,34 +73,48 @@ public class SessionRepository {
      * Carrega todas as sessões do arquivo de texto para a lista em memória.
      * Este método é chamado pelo construtor quando a persistência em arquivo está
      * ativada. Ele analisa cada linha do arquivo, reconstrói os objetos 'Session'
-     * e suas dependências (Room e Movie).
+     * e os adiciona tanto ao repositório global quanto à fila da sala correspondente.
      */
     private void loadFromFile() {
         try (Scanner fileScanner = new Scanner(new File(FILE_PATH))) {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 if (line.trim().isEmpty()) continue;
+
                 String[] parts = line.split(";");
                 if (parts.length >= 7) {
-                    int sessionId = Integer.parseInt(parts[0]);
-                    LocalDate date = LocalDate.parse(parts[1], DATE_FORMATTER);
-                    LocalTime time = LocalTime.parse(parts[2], TIME_FORMATTER);
-                    int roomId = Integer.parseInt(parts[3]);
-                    int movieId = Integer.parseInt(parts[4]);
-                    double ticketValue = Double.parseDouble(parts[5]);
-                    int totalAvailableSeats = Integer.parseInt(parts[6]);
+                    try {
+                        int sessionId = Integer.parseInt(parts[0]);
+                        LocalDate date = LocalDate.parse(parts[1], DATE_FORMATTER);
+                        LocalTime time = LocalTime.parse(parts[2], TIME_FORMATTER);
+                        int roomId = Integer.parseInt(parts[3]);
+                        int movieId = Integer.parseInt(parts[4]);
+                        double ticketValue = Double.parseDouble(parts[5]);
+                        int totalAvailableSeats = Integer.parseInt(parts[6]);
 
-                    Room room = RoomController.getRoomById(roomId);
-                    Movie movie = MovieController.getMovieById(movieId);
+                        Room room = RoomController.getRoomById(roomId);
+                        Movie movie = MovieController.getMovieById(movieId);
 
-                    if (room != null && movie != null) {
-                        Session session = new Session(sessionId, date, time, room, movie, ticketValue, totalAvailableSeats);
-                        this.sessions.add(session);
+                        if (room != null && movie != null) {
+                            Session session = new Session(sessionId, date, time, room, movie, ticketValue, totalAvailableSeats);
+
+                            this.sessions.add(session);
+
+                            try {
+                                room.addSession(session);
+                            } catch (Exception e) {
+                                System.err.println("Aviso: Não foi possível enfileirar a sessão " + sessionId + " na sala " + roomId + ". A fila da sala pode estar cheia.");
+                            }
+                        } else {
+                            System.err.println("Aviso: Sala ou Filme não encontrado para a sessão na linha: " + line);
+                        }
+                    } catch (Exception parseException) {
+                        System.err.println("Erro ao analisar a linha do arquivo de sessões: '" + line + "'. Erro: " + parseException.getMessage());
                     }
                 }
             }
-        } catch (Exception e) {
-            System.err.println("Erro ao carregar ou analisar o arquivo de sessões: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.err.println("Arquivo de sessões não encontrado: " + FILE_PATH);
         }
     }
 
@@ -153,18 +167,19 @@ public class SessionRepository {
     }
 
     /**
-     * Atualiza uma sessão selecionada e salva no arquivo.
+     * Atualiza uma sessão existente na lista.
+     * Encontra a sessão pelo ID e a substitui pela nova versão.
      *
-     * @param id O ID da sessão a ser atualizada.
-     * @param updatedSession A sessão com as novas informações.
+     * @param sessionToUpdate O objeto sessão com os dados atualizados.
      */
-    public void update(int id, Session updatedSession) {
-        int index = getIndex(id);
-        if (index == -1) {
-            throw new IllegalArgumentException("Sessão com ID " + id + " não existe!");
+    public void update(Session sessionToUpdate) {
+        int index = getIndex(sessionToUpdate.getId());
+        if (index != -1) {
+            sessions.set(index, sessionToUpdate);
+            saveToFile(); // Salva o estado atualizado no arquivo
+        } else {
+            System.err.println("Tentativa de atualizar uma sessão que não foi encontrada no repositório. ID: " + sessionToUpdate.getId());
         }
-        sessions.set(index, updatedSession);
-        saveToFile();
     }
 
     /**
