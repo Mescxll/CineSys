@@ -15,7 +15,7 @@ import java.util.LinkedList;
  */
 public class ClientController {
     
-    private static final ClientService clientService = new ClientService(new ClientRepository());
+    private static final ClientService clientService = new ClientService(new ClientRepository(true));
 
     /**
      * Adiciona um novo cliente ao sistema chamando o método addClient da classe

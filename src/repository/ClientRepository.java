@@ -5,8 +5,10 @@ import models.Client;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -77,14 +79,13 @@ public class ClientRepository {
                 if (line.trim().isEmpty()) continue;
 
                 String[] parts = line.split(";");
-                if (parts.length >= 5) { // id;nome;email;cpf;data
+                if (parts.length >= 5) {
                     int id = Integer.parseInt(parts[0]);
                     String name = parts[1];
                     String email = parts[2];
                     String cpf = parts[3];
                     LocalDate birthday = LocalDate.parse(parts[4], formatter);
 
-                    // Usa o NOVO construtor que aceita o ID
                     Client client = new Client(id, name, email, cpf, birthday);
                     this.clients.add(client);
                 }
@@ -96,17 +97,36 @@ public class ClientRepository {
     }
 
     /**
-     * Adiciona um cliente ao repositório.
+     * Salva a lista de clientes em memória de volta para o arquivo de texto.
+     */
+    private void saveToFile() {
+        if (!this.useFilePersistence) return;
+
+        try (PrintWriter writer = new PrintWriter(FILE_PATH)) {
+            for (Client client : this.clients) {
+                String line = String.format("%d;%s;%s;%s;%s",
+                        client.getId(),
+                        client.getName(),
+                        client.getEmail(),
+                        client.getCpf(),
+                        client.getBirthday());
+                writer.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("Erro ao salvar clientes no arquivo: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Adiciona um cliente ao repositório e o salva no arquivo clients.
      *
      * @param client O cliente a ser adicionado.
      */
-    public void add(Client client){
-        try {
-            clients.add(client);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void add(Client client) {
+        this.clients.add(client);
+        saveToFile();
     }
+
 
     /**
      * Busca um cliente pelo ID.
@@ -166,14 +186,12 @@ public class ClientRepository {
      * @param id ID do cliente a ser removido.
      * @return true se a remoção for bem-sucedida, false caso não exista cliente com esse ID.
      */
-    public boolean removeById(int id){
-        for(int i = 0; i < clients.size(); i++){
-            if (clients.get(i).getId() == id) {
-                try {
-                    clients.remove(i);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    public boolean removeById(int id) {
+        Iterator<Client> iterator = this.clients.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getId() == id) {
+                iterator.remove();
+                saveToFile();
                 return true;
             }
         }
@@ -183,7 +201,8 @@ public class ClientRepository {
     /**
      * Remove todos os clientes do repositório. Limpando a lista de clientes.
      */
-    public void clear(){
-        clients.clear();
+    public void clear() {
+        this.clients.clear();
+        saveToFile();
     }
 }
