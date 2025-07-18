@@ -16,31 +16,14 @@ import java.time.format.DateTimeFormatter;
  * @version 1.0
  */
 public class Session {
-    /** Gerador automático de IDs únicos para as sessões */
     private static int _idGenerator = 1;
-    
-    /** ID único da sessão */
     private int id;
-    
-    /** Data da sessão */
     private LocalDate date;
-    
-    /** Horário de início da sessão */
     private LocalTime time;
-    
-    /** Duração da sessão em minutos */
     private int duration;
-    
-    /** Sala onde a sessão será exibida */
     private Room room;
-    
-    /** Número total de assentos disponíveis para a sessão */
     private int totalAvailableSeats;
-    
-    /** Filme que será exibido na sessão */
     private Movie movie;
-    
-    /** Valor do ingresso para a sessão */
     private Double ticketValue;
 
     /**
@@ -63,6 +46,23 @@ public class Session {
         this.totalAvailableSeats = room.getTotalSeat();
         this.movie = movie;
         this.ticketValue = ticketValue;
+    }
+
+    /**
+     * Construtor para RECONSTRUIR sessões a partir de dados salvos.
+     */
+    public Session(int id, LocalDate date, LocalTime time, Room room, Movie movie, double ticketValue, int totalAvailableSeats) {
+        this.id = id;
+        this.date = date;
+        this.time = time;
+        this.room = room;
+        this.movie = movie;
+        this.ticketValue = ticketValue;
+        this.totalAvailableSeats = totalAvailableSeats;
+
+        if (id >= _idGenerator) {
+            _idGenerator = id + 1;
+        }
     }
 
     /**

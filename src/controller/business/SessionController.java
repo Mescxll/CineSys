@@ -19,7 +19,7 @@ import services.SessionService;
  */
 public class SessionController {
 
-    private static final SessionService sessionService = new SessionService(new SessionRepository());
+    private static final SessionService sessionService = new SessionService(new SessionRepository(true));
 
     /**
      * Adiciona uma nova sessão ao sistema.
