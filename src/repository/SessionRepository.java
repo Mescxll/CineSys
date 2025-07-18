@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -178,11 +179,12 @@ public class SessionRepository {
      * @param date A data pela qual se quer filtrar as sessões.
      * @return Uma lista contendo todas as sessões da data informada.
      */
-    public List<Session> getByDate(LocalDate date) {
-        List<Session> sessionsByDate = new LinkedList<>();
+    public LinkedList<Session> getByDate(LocalDate date) {
+        LinkedList<Session> sessionsByDate = new LinkedList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String dateString = date.format(formatter);
         for (Session session : sessions) {
-            // CORREÇÃO DO BUG: Compara dois objetos LocalDate, não um objeto com uma String.
-            if (session.getDate().equals(date)) {
+            if (session.getDate().equals(dateString)) {
                 sessionsByDate.add(session);
             }
         }
@@ -194,8 +196,8 @@ public class SessionRepository {
      *
      * @return Uma List contendo todas as sessões.
      */
-    public List<Session> getAll() {
-        return sessions;
+    public LinkedList<Session> getAll(){
+        return (LinkedList<Session>) sessions;
     }
 
     /**
