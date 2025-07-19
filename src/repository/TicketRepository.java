@@ -7,10 +7,7 @@ import models.Client;
 import models.Session;
 import models.Ticket;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -23,106 +20,51 @@ import java.util.*;
  * @version 3.0
  */
 public class TicketRepository {
-    private final List<Ticket> tickets;
-    private final String FILE_PATH = "data/tickets.txt";
-    private final boolean useFilePersistence;
+    private List<Ticket> tickets;
+    private final String FILE_PATH = "data/tickets.ser"; // Arquivo binário
 
     /**
-     * Construtor padrão. Opera em modo de memória, ideal para testes.
+     * Construtor do repositório.
+     * Tenta carregar os tickets do arquivo ao ser instanciado.
      */
     public TicketRepository() {
-        this(false);
+        loadFromFile();
     }
 
     /**
-     * Construtor principal que define o modo de operação.
-     * @param useFilePersistence Se true, o repositório lerá e salvará em arquivo.
+     * Carrega a lista de tickets de um arquivo binário.
+     * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
+     * Também repopula o histórico de compras dos clientes.
      */
-    public TicketRepository(boolean useFilePersistence) {
-        this.tickets = new LinkedList<>();
-        this.useFilePersistence = useFilePersistence;
-        if (this.useFilePersistence) {
-            ensureDataFileExists();
-            loadFromFile();
-        }
-    }
-
-    /**
-     * Garante que o diretório 'data' e o arquivo de tickets existam no disco.
-     * Se não existirem, eles são criados para evitar erros de "Arquivo Não Encontrado"
-     * na primeira execução da aplicação ou após uma clonagem limpa do repositório.
-     */
-    private void ensureDataFileExists() {
-        try {
-            File dataDir = new File("data");
-            if (!dataDir.exists()) dataDir.mkdirs();
-            File ticketsFile = new File(FILE_PATH);
-            if (!ticketsFile.exists()) ticketsFile.createNewFile();
-        } catch (IOException e) {
-            System.err.println("Erro crítico ao criar diretório ou arquivo de dados: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Carrega todos os tickets do arquivo de texto para a lista em memória.
-     * Este método é chamado pelo construtor quando a persistência em arquivo está
-     * ativada. Ele lê cada linha do arquivo, analisa os dados, reconstrói
-     * os objetos 'Ticket' com suas dependências (Cliente e Sessão) e os
-     * adiciona à lista interna do repositório.
-     */
+    @SuppressWarnings("unchecked")
     private void loadFromFile() {
-        try (Scanner fileScanner = new Scanner(new File(FILE_PATH))) {
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
-                if (line.trim().isEmpty()) continue;
-
-                String[] parts = line.split(";");
-                if (parts.length >= 5) {
-                    int ticketId = Integer.parseInt(parts[0]);
-                    int clientId = Integer.parseInt(parts[1]);
-                    int sessionId = Integer.parseInt(parts[2]);
-                    double finalPrice = Double.parseDouble(parts[3]);
-                    PaymentMethod paymentMethod = PaymentMethod.valueOf(parts[4]);
-
-                    Client client = ClientController.getClientById(clientId);
-                    Session session = SessionController.getSessionById(sessionId);
-
-                    if (client != null && session != null) {
-                        Ticket ticket = new Ticket(ticketId, client, session, finalPrice, paymentMethod);
-
-                        this.tickets.add(ticket);
-
-                        client.addTicketToHistory(ticket);
-                    } else {
-                        System.err.println("Erro ao carregar ticket: Cliente ou Sessão com ID não encontrado. Linha: " + line);
-                    }
+        new File("data").mkdirs();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
+            this.tickets = (List<Ticket>) ois.readObject();
+            System.out.println("Tickets carregados do arquivo serializado: " + FILE_PATH);
+            for (Ticket ticket : this.tickets) {
+                Client client = ticket.getClient();
+                if (client != null) {
+                    client.addTicketToHistory(ticket);
                 }
             }
-            System.out.println("Tickets carregados do arquivo: " + FILE_PATH);
-        } catch (Exception e) {
-            System.err.println("Erro ao carregar ou analisar o arquivo de tickets: " + e.getMessage());
+        } catch (FileNotFoundException | EOFException e) {
+            this.tickets = new LinkedList<>();
+            System.out.println("Arquivo de tickets não encontrado ou vazio. Iniciando com repositório novo.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro crítico ao carregar tickets do arquivo. Iniciando com repositório vazio.");
+            e.printStackTrace();
+            this.tickets = new LinkedList<>();
         }
     }
+
     /**
-     * Salva a lista de tickets em memória de volta para o arquivo de texto.
-     * Este método é chamado sempre que há uma alteração na lista de tickets
-     * (adição, remoção, etc.), caso a persistência em arquivo esteja ativada.
-     * Ele sobrescreve o conteúdo do arquivo com os dados atuais.
+     * Salva a lista de tickets em memória em um arquivo binário.
      */
     private void saveToFile() {
-        if (!useFilePersistence) return;
-        try (PrintWriter writer = new PrintWriter(FILE_PATH)) {
-            for (Ticket ticket : this.tickets) {
-                // Formato: ticketId;clientId;sessionId;precoFinal;metodoPagamento
-                String line = String.format(Locale.US, "%d;%d;%d;%f;%s",
-                        ticket.getId(),
-                        ticket.getClient().getId(),
-                        ticket.getSession().getId(),
-                        ticket.getFinalPrice(),
-                        ticket.getPaymentMethod().name()); // Salva o nome do enum
-                writer.println(line);
-            }
-        } catch (FileNotFoundException e) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
+            oos.writeObject(this.tickets);
+        } catch (IOException e) {
             System.err.println("Erro ao salvar tickets no arquivo: " + e.getMessage());
         }
     }

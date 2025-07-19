@@ -280,7 +280,7 @@ public class MainViews extends Application {
         ClientController.initialize(clientRepo);
         SessionController.initialize(sessionRepo);
 
-        TicketRepository ticketRepo = new TicketRepository(true);
+        TicketRepository ticketRepo = new TicketRepository();
 
         TicketController.initialize(ticketRepo);
 

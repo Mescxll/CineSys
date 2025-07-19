@@ -2,20 +2,23 @@ package models;
 
 import enums.PaymentMethod;
 
+import java.io.Serializable;
+
 /**
  * Representa um ingresso para uma sessão de cinema.
- * 
+ *
  * @author Helen Santos Rocha
+ * @version 5.0
  * @since 25/05/2025
- * @version 4.0
  */
-public class Ticket {
+public class Ticket implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private static int _idGenerator = 1;
     private int id;
     private double finalPrice;
     private Client client;
-    private Session session;    
+    private Session session;
     private PaymentMethod paymentMethod;
 
     /**
@@ -51,7 +54,6 @@ public class Ticket {
         this.finalPrice = finalPrice;
         this.paymentMethod = paymentMethod;
 
-        // Garante que o próximo ID gerado seja sempre maior que o maior ID carregado
         if (id >= _idGenerator) {
             _idGenerator = id + 1;
         }
@@ -127,6 +129,6 @@ public class Ticket {
      * Define o ID do ingresso.
      */
     public static void resetIdGenerator() {
-		_idGenerator = 1;
-	}
+        _idGenerator = 1;
+    }
 }
