@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,9 +10,10 @@ import java.util.List;
  *
  * @author Maria Eduarda Campos
  * @since 25/05/2025
- * @version 5.0
+ * @version 6.0
  */
-public class Client {
+public class Client implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static int _idGenerator = 1;
     private int id;
     private String name;
@@ -39,6 +41,7 @@ public class Client {
     }
 
     /**
+     * --- CONSTRUTOR NOVO (APENAS PARA CARREGAR DO ARQUIVO) ---
      * Construtor para reconstruir clientes a partir de dados salvos.
      * Ele recebe o ID existente do arquivo e ajusta o gerador de IDs.
      */

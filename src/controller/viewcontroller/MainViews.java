@@ -274,7 +274,7 @@ public class MainViews extends Application {
             e.printStackTrace();
             return;
         }
-        ClientRepository clientRepo = new ClientRepository(true);
+        ClientRepository clientRepo = new ClientRepository();
         SessionRepository sessionRepo = new SessionRepository(true);
 
         ClientController.initialize(clientRepo);

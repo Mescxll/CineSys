@@ -15,7 +15,7 @@ import java.util.LinkedList;
  */
 public class ClientController {
     
-    private static ClientService clientService = new ClientService(new ClientRepository(true));
+    private static ClientService clientService = new ClientService(new ClientRepository());
 
     /**
      * Método para inicializar o controller com suas dependências.

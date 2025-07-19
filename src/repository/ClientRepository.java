@@ -1,140 +1,80 @@
 package repository;
 
 import models.Client;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.io.*; // Import para todas as classes de I/O (Serializable, ObjectInputStream, etc.)
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
- * Classe que gerencia a coleção de clientes.
+ * Classe que gerencia a coleção de clientes com persistência via serialização.
+ * Salva e carrega a lista de objetos Client diretamente em um arquivo binário.
+ *
  * @author Vinícius Nunes de Andrade
  * @author Thiago Ferreira Ribeiro
  * @since 11/06/2025
- * @version 3.0
+ * @version 4.0
  */
 public class ClientRepository {
-    private final List<Client> clients;
-    private final String FILE_PATH = "data/clients.txt";
-    private final boolean useFilePersistence; // "Interruptor" para ligar/desligar a persistência
+    private List<Client> clients;
+    private final String FILE_PATH = "data/clients.ser";
 
     /**
-     * Construtor padrão. Opera em modo de memória, ideal para testes.
+     * Construtor do repositório.
+     * Tenta carregar os clientes do arquivo ao ser instanciado.
      */
     public ClientRepository() {
-        this(false);
+        loadFromFile();
     }
 
     /**
-     * Construtor principal que define o modo de operação.
-     *
-     * @param useFilePersistence Se true, o repositório lerá e salvará em arquivo.
-     * Se false, operará apenas em memória.
+     * Carrega a lista de clientes de um arquivo binário.
+     * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
      */
-    public ClientRepository(boolean useFilePersistence) {
-        this.clients = new LinkedList<>();
-        this.useFilePersistence = useFilePersistence;
+    @SuppressWarnings("unchecked")
+    private void loadFromFile() {
+        new File("data").mkdirs();
 
-        if (this.useFilePersistence) {
-            ensureDataFileExists();
-            loadFromFile();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
+            this.clients = (List<Client>) ois.readObject();
+            System.out.println("Clientes carregados do arquivo serializado: " + FILE_PATH);
+        } catch (FileNotFoundException | EOFException e) {
+            this.clients = new LinkedList<>();
+            System.out.println("Arquivo de clientes não encontrado ou vazio. Iniciando com repositório novo.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro crítico ao carregar clientes do arquivo. Iniciando com repositório vazio.");
+            e.printStackTrace();
+            this.clients = new LinkedList<>();
         }
     }
 
     /**
-     * Garante que o diretório 'data' e o arquivo de clientes existam.
-     * Se não existirem, eles são criados.
+     * Salva a lista de clientes em memória em um arquivo binário.
      */
-    private void ensureDataFileExists() {
-        try {
-            File dataDir = new File("data");
-            if (!dataDir.exists()) {
-                dataDir.mkdirs();
-            }
-            File clientsFile = new File(FILE_PATH);
-            if (!clientsFile.exists()) {
-                clientsFile.createNewFile();
-            }
+    private void saveToFile() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
+            oos.writeObject(this.clients);
         } catch (IOException e) {
-            System.err.println("Erro crítico ao criar diretório ou arquivo de dados: " + e.getMessage());
+            System.err.println("Erro ao salvar clientes no arquivo: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     /**
-     * Carrega os clientes do arquivo de texto para a lista em memória.
-     */
-    private void loadFromFile() {
-        try (Scanner fileScanner = new Scanner(new File(FILE_PATH))) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
-                if (line.trim().isEmpty()) continue;
-
-                String[] parts = line.split(";");
-                if (parts.length >= 5) {
-                    int id = Integer.parseInt(parts[0]);
-                    String name = parts[1];
-                    String email = parts[2];
-                    String cpf = parts[3];
-                    LocalDate birthday = LocalDate.parse(parts[4], formatter);
-
-                    Client client = new Client(id, name, email, cpf, birthday);
-                    this.clients.add(client);
-                }
-            }
-            System.out.println("Clientes carregados do arquivo: " + FILE_PATH);
-        } catch (Exception e) {
-            System.err.println("Erro ao carregar ou analisar o arquivo de clientes: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Salva a lista de clientes em memória de volta para o arquivo de texto.
-     */
-    private void saveToFile() {
-        if (!this.useFilePersistence) return;
-
-        try (PrintWriter writer = new PrintWriter(FILE_PATH)) {
-            for (Client client : this.clients) {
-                String line = String.format("%d;%s;%s;%s;%s",
-                        client.getId(),
-                        client.getName(),
-                        client.getEmail(),
-                        client.getCpf(),
-                        client.getBirthday());
-                writer.println(line);
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("Erro ao salvar clientes no arquivo: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Adiciona um cliente ao repositório e o salva no arquivo clients.
-     *
+     * Adiciona um cliente ao repositório e salva a lista atualizada.
      * @param client O cliente a ser adicionado.
      */
     public void add(Client client) {
-        this.clients.add(client);
+        clients.add(client);
         saveToFile();
     }
 
-
     /**
-     * Busca um cliente pelo ID.
-     *
+     * Busca um cliente pelo ID de forma eficiente.
      * @param id ID do cliente.
      * @return O cliente correspondente, ou null se não encontrado.
      */
-    public Client getById(int id){
+    public Client getById(int id) {
         for (Client client : clients) {
             if (client.getId() == id) {
                 return client;
@@ -144,31 +84,11 @@ public class ClientRepository {
     }
 
     /**
-     * Atualiza um cliente selecionado
-     *
-     * @param id do cliente a ser atualizada
-     * @param client novo cliente que será atualizado
+     * Remove todos os clientes do repositório.
      */
-    public void update(int id, Client client){
-        if(getById(id) == null)
-            throw new IllegalArgumentException("Cliente não existe!");
-        clients.set(getIndex(id), client);
-    }
-
-    /**
-     * Método auxiliar para pegar o index de uma certa sessão
-     *
-     * @param id do cliente
-     * @return se o id existir, retorna o index requerido
-     *         caso não existe, retorna -1
-     */
-    private int getIndex(int id){
-        for(int i = 0; i < clients.size(); i++){
-            if(clients.get(i).getId() == id){
-                return i;
-            }
-        }
-        return -1;
+    public void clear() {
+        clients.clear();
+        saveToFile();
     }
 
     /**
@@ -187,7 +107,7 @@ public class ClientRepository {
      * @return true se a remoção for bem-sucedida, false caso não exista cliente com esse ID.
      */
     public boolean removeById(int id) {
-        Iterator<Client> iterator = this.clients.iterator();
+        Iterator<Client> iterator = clients.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().getId() == id) {
                 iterator.remove();
@@ -196,13 +116,5 @@ public class ClientRepository {
             }
         }
         return false;
-    }
-
-    /**
-     * Remove todos os clientes do repositório. Limpando a lista de clientes.
-     */
-    public void clear() {
-        this.clients.clear();
-        saveToFile();
     }
 }
