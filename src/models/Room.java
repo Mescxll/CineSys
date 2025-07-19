@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,18 +19,15 @@ import java.util.List;
  * @since 25/05/2025
  * @version 1.0
  */
-public class Room {
-    /** Gerador automático de IDs para as salas */
+public class Room implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private static int _idGenerator = 1;
-    
-    /** Identificador único da sala */
     private int id;
-    
-    /** Número total de assentos disponíveis na sala */
     private int totalSeat;
-    
-    /** Lista dinâmica que armazena as sessões programadas para esta sala */
-    private List<Session> sessions;
+    // IMPORTANTE: O campo 'sessions' não pode ser salvo diretamente no arquivo da Sala.
+    // Ele será reconstruído ao carregar as Sessões. Para isso, o marcamos como 'transient'.
+    private transient List<Session> sessions;
 
     /**
      * Construtor da classe Room.
@@ -44,6 +42,29 @@ public class Room {
         this.totalSeat = totalSeat;
         this.id = _idGenerator++;
         this.sessions = new LinkedList<>();
+    }
+    /**
+     * Construtor para reconstruir salas a partir de dados salvos.
+     * Recebe o ID existente do arquivo e ajusta o gerador de IDs.
+     */
+    public Room(int id, int totalSeat) {
+        this.id = id;
+        this.totalSeat = totalSeat;
+        this.sessions = new LinkedList<>();
+
+        if (id >= _idGenerator) {
+            _idGenerator = id + 1;
+        }
+    }
+
+    /**
+     * Garante que a lista de sessões nunca seja nula.
+     * Este método privado é chamado antes de qualquer operação na lista.
+     */
+    private void ensureSessionsListExists() {
+        if (this.sessions == null) {
+            this.sessions = new LinkedList<>();
+        }
     }
 
     /**
@@ -73,7 +94,8 @@ public class Room {
      * @param session a sessão a ser adicionada à sala
      * @throws Exception se ocorrer erro ao adicionar a sessão na fila
      */
-    public void addSession(Session session) throws Exception{
+    public void addSession(Session session) throws Exception {
+        ensureSessionsListExists();
         sessions.add(session);
     }
 
@@ -85,8 +107,12 @@ public class Room {
      * 
      * @return a próxima sessão da fila, ou null se a fila estiver vazia
      */
-    public Session removeSession(){
-        return sessions.removeFirst();
+    public Session removeSession() {
+        ensureSessionsListExists(); // Garante que a lista foi inicializada
+        if (!sessions.isEmpty()) {
+            return sessions.removeFirst();
+        }
+        return null;
     }
 
     /**
@@ -98,8 +124,9 @@ public class Room {
      * 
      * @return a lista dinâmica contendo todas as sessões da sala
      */
-    public LinkedList<Session> getSessions() {
-        return (LinkedList<Session>) sessions;
+    public List<Session> getSessions() {
+        ensureSessionsListExists();
+        return sessions;
     }
 
     /**
