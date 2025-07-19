@@ -1,13 +1,16 @@
 package models;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa um filme.
  * 
  * @author Gabryelle Beatriz Duarte Moraes
  * @since 01/06/2024
- * @version 1.0
+ * @version 2.0
  */
-public class Movie {
+public class Movie implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private static int _idGenerator = 1;
 	private int id;
 	private String title;
@@ -15,7 +18,7 @@ public class Movie {
 	private int duration;
 	private String classification;
 	private String synopsis;
-	
+
 
 	/**
 	 * Construtor da classe Movie.
@@ -33,12 +36,19 @@ public class Movie {
 		this.duration = duration;
 		this.classification = classification;
 		this.synopsis = synopsis;
-		id=_idGenerator++;
+		this.id=_idGenerator++;
 	}
 
 	/**
 	 * Construtor para RECONSTRUIR filmes a partir de dados salvos.
 	 * Recebe o ID existente do arquivo.
+	 *
+	 * @param id id do filme
+	 * @param title Título do filme
+	 * @param genre Gênero do filme
+	 * @param duration Duração do filme em minutos
+	 * @param classification Classificação indicativa do filme
+	 * @param synopsis Sinopse do filme
 	 */
 	public Movie(int id, String title, String genre, int duration, String classification, String synopsis) {
 		this.id = id;

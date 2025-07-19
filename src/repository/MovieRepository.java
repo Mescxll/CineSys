@@ -2,10 +2,7 @@ package repository;
 
 import models.Movie;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,86 +18,47 @@ import java.util.Scanner;
  * @version 3.0
  */
 public class MovieRepository {
-    private final List<Movie> movies;
-    private final String FILE_PATH = "data/movies.txt";
-    private final boolean useFilePersistence;
+    private List<Movie> movies;
+    private final String FILE_PATH = "data/movies.ser";
 
     /**
-     * Construtor padrão. Opera em modo de memória, ideal para testes.
+     * Construtor do repositório.
+     * Tenta carregar os filmes do arquivo ao ser instanciado.
      */
     public MovieRepository() {
-        this(false);
+        loadFromFile();
     }
 
     /**
-     * Construtor principal que define o modo de operação.
-     *
-     * @param useFilePersistence Se true, o repositório lerá e salvará em arquivo.
+     * Carrega a lista de filmes de um arquivo binário.
+     * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
      */
-    public MovieRepository(boolean useFilePersistence) {
-        this.movies = new LinkedList<>();
-        this.useFilePersistence = useFilePersistence;
-
-        if (this.useFilePersistence) {
-            ensureDataFileExists();
-            loadFromFile();
-        }
-    }
-
-    private void ensureDataFileExists() {
-        try {
-            File dataDir = new File("data");
-            if (!dataDir.exists()) dataDir.mkdirs();
-            File moviesFile = new File(FILE_PATH);
-            if (!moviesFile.exists()) moviesFile.createNewFile();
-        } catch (IOException e) {
-            System.err.println("Erro crítico ao criar diretório ou arquivo de dados: " + e.getMessage());
-        }
-    }
-
+    @SuppressWarnings("unchecked")
     private void loadFromFile() {
-        try (Scanner fileScanner = new Scanner(new File(FILE_PATH))) {
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
-                if (line.trim().isEmpty()) continue;
+        new File("data").mkdirs();
 
-                String[] parts = line.split(";", -1); // -1 para incluir campos vazios no final
-                if (parts.length >= 6) {
-                    int id = Integer.parseInt(parts[0]);
-                    String title = parts[1];
-                    String genre = parts[2];
-                    int duration = Integer.parseInt(parts[3]);
-                    String classification = parts[4];
-                    String synopsis = parts[5];
-
-                    // Usa o construtor que aceita o ID para recriar o objeto
-                    Movie movie = new Movie(id, title, genre, duration, classification, synopsis);
-                    this.movies.add(movie);
-                }
-            }
-            System.out.println("Filmes carregados do arquivo: " + FILE_PATH);
-        } catch (Exception e) {
-            System.err.println("Erro ao carregar ou analisar o arquivo de filmes: " + e.getMessage());
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
+            this.movies = (List<Movie>) ois.readObject();
+            System.out.println("Filmes carregados do arquivo serializado: " + FILE_PATH);
+        } catch (FileNotFoundException | EOFException e) {
+            this.movies = new LinkedList<>();
+            System.out.println("Arquivo de filmes não encontrado ou vazio. Iniciando com repositório novo.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro crítico ao carregar filmes do arquivo. Iniciando com repositório vazio.");
+            e.printStackTrace();
+            this.movies = new LinkedList<>();
         }
     }
 
+    /**
+     * Salva a lista de filmes em memória em um arquivo binário.
+     */
     private void saveToFile() {
-        if (!useFilePersistence) return;
-
-        try (PrintWriter writer = new PrintWriter(new File(FILE_PATH))) {
-            for (Movie movie : this.movies) {
-                // Formato: id;titulo;genero;duracao;classificacao;sinopse
-                String line = String.format("%d;%s;%s;%d;%s;%s",
-                        movie.getId(),
-                        movie.getTitle(),
-                        movie.getGenre(),
-                        movie.getDuration(),
-                        movie.getClassification(),
-                        movie.getSynopsis());
-                writer.println(line);
-            }
-        } catch (FileNotFoundException e) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
+            oos.writeObject(this.movies);
+        } catch (IOException e) {
             System.err.println("Erro ao salvar filmes no arquivo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

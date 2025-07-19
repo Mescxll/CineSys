@@ -15,7 +15,7 @@ import java.util.LinkedList;
  */
 public class MovieController {
 
-    private static MovieService movieService = new MovieService(new MovieRepository(true));
+    private static MovieService movieService = new MovieService(new MovieRepository());
 
     /**
      * Método para inicializar o controller com suas dependências.
