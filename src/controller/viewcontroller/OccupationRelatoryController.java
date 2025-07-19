@@ -149,7 +149,7 @@ public class OccupationRelatoryController implements Initializable {
     }
 
     /**
-     * Mostra os filtros para a sala 1.
+     * Mostra os filtros com base na seleção do ComboBox.
      */
     public void showFilter() {
         filterContainer.getChildren().clear();
@@ -162,55 +162,38 @@ public class OccupationRelatoryController implements Initializable {
         }
 
         if ("Filme".equals(selected)) {
-
-            List<Session> sessoesList = new ArrayList<>();
-            for (Session s : room.getSessions()) {
-                sessoesList.add(s);
-            }
-            if (sessoesList.isEmpty()) {
-                filterContainer.getChildren().add(new Label("Nenhuma sessão encontrada."));
-                return;
-            }
-
-            sessoesList.stream()
-                    .collect(Collectors.groupingBy(Session::getMovie)) 
+            room.getSessions().stream()
+                    .collect(Collectors.groupingBy(Session::getMovie))
                     .forEach((movie, sessoesDoFilme) -> {
-
-                        double totalOcupacao = 0;
+                        double totalVendidos = 0;
                         for (Session session : sessoesDoFilme) {
-                            int vendidos = room.getTotalSeat() - session.getTotalAvailableSeats();
-                            totalOcupacao += (double) vendidos;
+                            totalVendidos += (room.getTotalSeat() - session.getTotalAvailableSeats());
                         }
                         double totalAssentosOferecidos = (double) sessoesDoFilme.size() * room.getTotalSeat();
-                        double ocupacaoMedia = (totalAssentosOferecidos > 0) ? (totalOcupacao / totalAssentosOferecidos) * 100 : 0;
+                        double ocupacaoMedia = (totalAssentosOferecidos > 0) ? (totalVendidos / totalAssentosOferecidos) * 100 : 0;
 
                         Text titleText = new Text(movie.getTitle() + " ");
                         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
                         titleText.setFill(javafx.scene.paint.Color.web("#f2e8c6"));
-
                         Text occupationText = new Text("- Ocupação Média: " + String.format("%.1f", ocupacaoMedia) + "%\n");
                         occupationText.setFont(Font.font("Arial", 18));
                         occupationText.setFill(javafx.scene.paint.Color.web("#f2e8c6"));
-
                         TextFlow textFlow = new TextFlow(titleText, occupationText);
                         filterContainer.getChildren().add(textFlow);
-                        System.out.println("Resumo do filme '" + movie.getTitle() + "' adicionado.");
                     });
+
         } else if ("Horário de Sessão".equals(selected)) {
-            List<Movie> moviesNaSala = new ArrayList<>();
-            if (room != null && room.getSessions() != null && !room.getSessions().isEmpty()) {
-                for (Session session : room.getSessions()) {
-                    if (!moviesNaSala.contains(session.getMovie())) {
-                        moviesNaSala.add(session.getMovie());
-                    }
-                }
-            }
+
+            List<Movie> moviesNaSala = room.getSessions().stream()
+                    .map(Session::getMovie)
+                    .distinct()
+                    .toList();
 
             if (moviesNaSala.isEmpty()) {
-                Label noMoviesLabel = new Label("Não há sessões programadas para esta sala.");
+                Label noMoviesLabel = new Label("Não há filmes com sessões programadas para esta sala.");
                 noMoviesLabel.setStyle("-fx-text-fill: #f2e8c6; -fx-font-size: 14px; -fx-padding: 15px;");
                 filterContainer.getChildren().add(noMoviesLabel);
-                return; 
+                return;
             }
 
             String activeTabStyle = "-fx-background-color: #af0e2c; -fx-text-fill: #f2e8c6; -fx-background-radius: 5; -fx-font-weight: bold;";
@@ -242,42 +225,43 @@ public class OccupationRelatoryController implements Initializable {
                     displaySessionsForMovie(filmeSelecionado, sessionDetailsContainer);
                 });
             }
-
-            movieButtons.getFirst().fire();
+            if (!movieButtons.isEmpty()) {
+                movieButtons.get(0).fire();
+            }
 
             filterContainer.getChildren().addAll(movieTabs, sessionDetailsContainer);
         }
     }
 
     /**
-     * Limpa o contêiner de detalhes e exibe uma lista de todas as sessões naquela sala
-     * para um filme específico, buscando os dados através do MovieController.
+     * Limpa o contêiner de detalhes e exibe uma lista de todas as sessões
+     * para um filme específico QUE ESTÃO NA SALA ATUAL.
      *
      * @param movie O filme cujas sessões serão exibidas.
      * @param container O VBox onde as informações das sessões serão adicionadas.
      */
     private void displaySessionsForMovie(Movie movie, VBox container) {
         container.getChildren().clear();
-        List<Session> sessoesDoFilme = MovieController.getSessionsByMovie(movie.getId());
-        List<Session> sessoesDoFilmeNaSala = new LinkedList<>();
-        for (Session session : sessoesDoFilme) {
-            if (room.getSessions().contains(session))
-                sessoesDoFilmeNaSala.add(session);
+
+        List<Session> sessoesDoFilmeNaSala = new ArrayList<>();
+
+        if (room != null && room.getSessions() != null) {
+            for (Session session : room.getSessions()) {
+                if (session.getMovie().getId() == movie.getId()) {
+                    sessoesDoFilmeNaSala.add(session);
+                }
+            }
         }
 
         if (sessoesDoFilmeNaSala.isEmpty()) {
-            Label noSessionsLabel = new Label("Não há sessões programadas para este filme.");
+            Label noSessionsLabel = new Label("Não há sessões programadas para este filme nesta sala.");
             noSessionsLabel.setStyle("-fx-text-fill: #f2e8c6;");
             container.getChildren().add(noSessionsLabel);
             return;
         }
-
         int sessionCounter = 1;
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         for (Session session : sessoesDoFilmeNaSala) {
-
             String dataFormatada = session.getDate();
             String horaFormatada = session.getTime();
 

@@ -31,12 +31,12 @@ public class Movie implements Serializable {
 	 * @param synopsis Sinopse do filme
 	 */
 	public Movie(String title, String genre, int duration, String classification, String synopsis) {
+		this.id=_idGenerator++;
 		this.title = title;
 		this.genre = genre;
 		this.duration = duration;
 		this.classification = classification;
 		this.synopsis = synopsis;
-		this.id=_idGenerator++;
 	}
 
 	/**
@@ -183,5 +183,18 @@ public class Movie implements Serializable {
 	 */
 	public static void resetIdGenerator() {
 		_idGenerator = 1;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Movie movie = (Movie) o;
+		return id == movie.id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Integer.hashCode(id);
 	}
 }
