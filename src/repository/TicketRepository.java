@@ -45,7 +45,10 @@ public class TicketRepository {
             for (Ticket ticket : this.tickets) {
                 Client client = ticket.getClient();
                 if (client != null) {
-                    client.addTicketToHistory(ticket);
+                    Client clientFromController = ClientController.getClientById(client.getId());
+                    if (clientFromController != null) {
+                        clientFromController.addTicketToHistory(ticket);
+                    }
                 }
             }
         } catch (FileNotFoundException | EOFException e) {

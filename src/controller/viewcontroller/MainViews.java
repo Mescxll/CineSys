@@ -268,24 +268,20 @@ public class MainViews extends Application {
         System.out.println("--- INICIALIZANDO CAMADA DE DADOS (COM ARQUIVOS) ---");
         try {
             Class.forName("controller.business.RoomController");
-            Class.forName("controller.business.MovieController"); // Supondo que MovieController siga o mesmo padrão
+            Class.forName("controller.business.MovieController");
         } catch (ClassNotFoundException e) {
-            System.err.println("Erro crítico: Não foi possível inicializar os controllers base.");
-            e.printStackTrace();
-            return;
+            System.out.println(e.getMessage());
         }
         ClientRepository clientRepo = new ClientRepository();
         SessionRepository sessionRepo = new SessionRepository();
-
+        TicketRepository ticketRepo = new TicketRepository();
         ClientController.initialize(clientRepo);
         SessionController.initialize(sessionRepo);
-
-        TicketRepository ticketRepo = new TicketRepository();
-
         TicketController.initialize(ticketRepo);
 
         System.out.println("--- CAMADA DE DADOS INICIALIZADA COM SUCESSO ---");
     }
+
     private static List<OnChangeScreen> listeners = new ArrayList<>();
 
     /**

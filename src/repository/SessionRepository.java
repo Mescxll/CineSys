@@ -50,7 +50,10 @@ public class SessionRepository {
                 Room room = session.getRoom();
                 if (room != null) {
                     try {
-                        room.addSession(session);
+                        Room roomFromController = RoomController.getRoomById(room.getId());
+                        if (roomFromController != null) {
+                            roomFromController.addSession(session);
+                        }
                     } catch (Exception e) {
                         System.err.println("Aviso: Falha ao enfileirar sessão " + session.getId() + " na sala " + room.getId() + " durante o carregamento.");
                     }
@@ -66,7 +69,6 @@ public class SessionRepository {
             this.sessions = new LinkedList<>();
         }
     }
-
     /**
      * Salva a lista de sessões em memória em um arquivo binário.
      */
