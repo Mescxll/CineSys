@@ -6,146 +6,80 @@ import models.Movie;
 import models.Room;
 import models.Session;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*; // Import genérico para todas as classes de I/O
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Classe que gerencia as sessões (Session) do cinema.
- * Pode operar em modo de memória ou com persistência em arquivo de texto.
+ * Classe que gerencia as sessões (Session) do cinema usando serialização.
  *
  * @author Thiago Ferreira Ribeiro
  * @author Vinícius Nunes de Andrade
  * @since 11/06/2025
- * @version 3.1
+ * @version 4.0
  */
 public class SessionRepository {
-    private final List<Session> sessions;
-    private final String FILE_PATH = "data/sessions.txt";
-    private final boolean useFilePersistence;
+    private List<Session> sessions;
+    private final String FILE_PATH = "data/sessions.ser";
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-
     /**
-     * Construtor padrão que inicializa o repositório em modo de memória.
+     * Construtor do repositório.
+     * Tenta carregar as sessões do arquivo ao ser instanciado.
      */
-    public SessionRepository() { this(false); }
-
-    /**
-     * Construtor principal que define o modo de operação do repositório.
-     *
-     * @param useFilePersistence Se 'true', o repositório lerá e salvará dados
-     * em um arquivo de texto. Se 'false', operará
-     * apenas em memória.
-     */
-    public SessionRepository(boolean useFilePersistence) {
-        this.sessions = new LinkedList<>();
-        this.useFilePersistence = useFilePersistence;
-        if (this.useFilePersistence) {
-            ensureDataFileExists();
-            loadFromFile();
-        }
+    public SessionRepository() {
+        loadFromFile();
     }
 
     /**
-     * Garante que o diretório 'data' e o arquivo de sessões existam no disco.
-     * Se não existirem, eles são criados para evitar erros de "Arquivo Não Encontrado"
-     * na primeira execução da aplicação.
+     * Carrega a lista de sessões de um arquivo binário.
+     * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
+     * Também repopula as filas de sessão das salas.
      */
-    private void ensureDataFileExists() {
-        try {
-            File dataDir = new File("data");
-            if (!dataDir.exists()) dataDir.mkdirs();
-            File sessionsFile = new File(FILE_PATH);
-            if (!sessionsFile.exists()) sessionsFile.createNewFile();
-        } catch (IOException e) {
-            System.err.println("Erro crítico ao criar diretório ou arquivo de dados: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Carrega todas as sessões do arquivo de texto para a lista em memória.
-     * Este método é chamado pelo construtor quando a persistência em arquivo está
-     * ativada. Ele analisa cada linha do arquivo, reconstrói os objetos 'Session'
-     * e os adiciona tanto ao repositório global quanto à fila da sala correspondente.
-     */
+    @SuppressWarnings("unchecked")
     private void loadFromFile() {
-        try (Scanner fileScanner = new Scanner(new File(FILE_PATH))) {
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
-                if (line.trim().isEmpty()) continue;
+        new File("data").mkdirs();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
+            this.sessions = (List<Session>) ois.readObject();
+            System.out.println("Sessões carregadas do arquivo serializado: " + FILE_PATH);
 
-                String[] parts = line.split(";");
-                if (parts.length >= 7) {
+            for (Session session : this.sessions) {
+                Room room = session.getRoom();
+                if (room != null) {
                     try {
-                        int sessionId = Integer.parseInt(parts[0]);
-                        LocalDate date = LocalDate.parse(parts[1], DATE_FORMATTER);
-                        LocalTime time = LocalTime.parse(parts[2], TIME_FORMATTER);
-                        int roomId = Integer.parseInt(parts[3]);
-                        int movieId = Integer.parseInt(parts[4]);
-                        double ticketValue = Double.parseDouble(parts[5]);
-                        int totalAvailableSeats = Integer.parseInt(parts[6]);
-
-                        Room room = RoomController.getRoomById(roomId);
-                        Movie movie = MovieController.getMovieById(movieId);
-
-                        if (room != null && movie != null) {
-                            Session session = new Session(sessionId, date, time, room, movie, ticketValue, totalAvailableSeats);
-
-                            this.sessions.add(session);
-
-                            try {
-                                room.addSession(session);
-                            } catch (Exception e) {
-                                System.err.println("Aviso: Não foi possível enfileirar a sessão " + sessionId + " na sala " + roomId + ". A fila da sala pode estar cheia.");
-                            }
-                        } else {
-                            System.err.println("Aviso: Sala ou Filme não encontrado para a sessão na linha: " + line);
-                        }
-                    } catch (Exception parseException) {
-                        System.err.println("Erro ao analisar a linha do arquivo de sessões: '" + line + "'. Erro: " + parseException.getMessage());
+                        room.addSession(session);
+                    } catch (Exception e) {
+                        System.err.println("Aviso: Falha ao enfileirar sessão " + session.getId() + " na sala " + room.getId() + " durante o carregamento.");
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("Arquivo de sessões não encontrado: " + FILE_PATH);
+
+        } catch (FileNotFoundException | EOFException e) {
+            this.sessions = new LinkedList<>();
+            System.out.println("Arquivo de sessões não encontrado ou vazio. Iniciando com repositório novo.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro crítico ao carregar sessões do arquivo. Iniciando com repositório vazio.");
+            e.printStackTrace();
+            this.sessions = new LinkedList<>();
         }
     }
 
     /**
-     * Salva a lista de sessões em memória de volta para o arquivo de texto.
+     * Salva a lista de sessões em memória em um arquivo binário.
      */
     private void saveToFile() {
-        if (!useFilePersistence) return;
-        try (PrintWriter writer = new PrintWriter(FILE_PATH)) {
-            for (Session session : this.sessions) {
-                String formattedDate = session.getDate();
-                String formattedTime = session.getTime();
-
-                String line = String.format(Locale.US, "%d;%s;%s;%d;%d;%f;%d",
-                        session.getId(),
-                        formattedDate,
-                        formattedTime,
-                        session.getRoom().getId(),
-                        session.getMovie().getId(),
-                        session.getTicketValue(),
-                        session.getTotalAvailableSeats());
-                writer.println(line);
-            }
-        } catch (FileNotFoundException e) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
+            oos.writeObject(this.sessions);
+        } catch (IOException e) {
             System.err.println("Erro ao salvar sessões no arquivo: " + e.getMessage());
         }
     }
 
     /**
      * Adiciona uma nova sessão à lista e salva no arquivo.
-     *
      * @param session A sessão a ser adicionada.
      */
     public void add(Session session) {
@@ -154,10 +88,9 @@ public class SessionRepository {
     }
 
     /**
-     * Busca uma sessão pelo seu ID de forma eficiente.
-     *
-     * @param id Identificador da sessão.
-     * @return A sessão com o ID fornecido, ou null se não existir.
+     * Retorna uma sessão pelo seu ID.
+     * @param id O ID da sessão.
+     * @return A sessão encontrada ou null.
      */
     public Session getById(int id) {
         for (Session session : sessions) {
@@ -167,9 +100,7 @@ public class SessionRepository {
     }
 
     /**
-     * Atualiza uma sessão na lista, encontrando-a pelo ID do objeto fornecido.
-     * Após a atualização na memória, salva o estado completo no arquivo.
-     *
+     * Atualiza uma sessão na lista e salva no arquivo.
      * @param sessionToUpdate O objeto Sessão com as informações atualizadas.
      */
     public void update(Session sessionToUpdate) {
@@ -178,20 +109,13 @@ public class SessionRepository {
         if (index != -1) {
             sessions.set(index, sessionToUpdate);
             saveToFile();
-        } else {
-            System.err.println("Aviso: Tentativa de atualizar uma sessão (ID: " + sessionToUpdate.getId() + ") que não existe no repositório.");
         }
     }
 
-    /**
-     * Método auxiliar para pegar o índice de uma certa sessão.
-     */
     private int getIndex(int id) {
         int index = 0;
         for (Session session : sessions) {
-            if (session.getId() == id) {
-                return index;
-            }
+            if (session.getId() == id) return index;
             index++;
         }
         return -1;
@@ -199,6 +123,8 @@ public class SessionRepository {
 
     /**
      * Retorna todas as sessões agendadas para uma dada data.
+     * @param date A data (como objeto LocalDate) pela qual se quer filtrar.
+     * @return Uma lista contendo as sessões da data informada.
      */
     public LinkedList<Session> getByDate(LocalDate date) {
         LinkedList<Session> sessionsByDate = new LinkedList<>();
@@ -216,7 +142,7 @@ public class SessionRepository {
     /**
      * Retorna todas as sessões cadastradas.
      *
-     * @return Uma List contendo todas as sessões.
+     * @return Uma lista contendo todas as sessões.
      */
     public LinkedList<Session> getAll(){
         return (LinkedList<Session>) sessions;
@@ -224,15 +150,11 @@ public class SessionRepository {
 
     /**
      * Remove a sessão com o ID especificado e salva no arquivo.
-     *
-     * @param id Identificador da sessão a ser removida.
-     * @return true se a sessão foi removida; false caso contrário.
      */
     public boolean removeById(int id) {
         Iterator<Session> iterator = sessions.iterator();
         while (iterator.hasNext()) {
-            Session session = iterator.next();
-            if (session.getId() == id) {
+            if (iterator.next().getId() == id) {
                 iterator.remove();
                 saveToFile();
                 return true;

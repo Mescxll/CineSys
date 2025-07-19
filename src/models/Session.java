@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +16,9 @@ import java.time.format.DateTimeFormatter;
  * @since 11/06/2025
  * @version 1.0
  */
-public class Session {
+public class Session implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private static int _idGenerator = 1;
     private int id;
     private LocalDate date;

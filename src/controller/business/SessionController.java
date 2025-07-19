@@ -19,7 +19,7 @@ import services.SessionService;
  */
 public class SessionController {
 
-    private static SessionService sessionService = new SessionService(new SessionRepository(true));
+    private static SessionService sessionService = new SessionService(new SessionRepository());
 
     /**
      * Método para inicializar o controller com suas dependências.

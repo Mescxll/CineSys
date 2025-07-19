@@ -120,7 +120,6 @@ public class TicketService {
 
         Ticket ticket = new Ticket(client, session, finalPrice, method);
 
-        // Adiciona o novo ticket ao seu próprio repositório (ex: tickets.txt)
         ticketRepository.add(ticket);
 
         // Atualiza o cliente (adiciona o ticket ao histórico e registra os pontos)

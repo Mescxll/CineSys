@@ -275,7 +275,7 @@ public class MainViews extends Application {
             return;
         }
         ClientRepository clientRepo = new ClientRepository();
-        SessionRepository sessionRepo = new SessionRepository(true);
+        SessionRepository sessionRepo = new SessionRepository();
 
         ClientController.initialize(clientRepo);
         SessionController.initialize(sessionRepo);
