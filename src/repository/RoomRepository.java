@@ -31,7 +31,6 @@ public class RoomRepository {
      * Carrega a lista de salas de um arquivo binário.
      * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
      */
-    @SuppressWarnings("unchecked")
     private void loadFromFile() {
         new File("data").mkdirs(); // Garante que a pasta 'data' exista
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {

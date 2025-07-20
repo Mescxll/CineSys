@@ -1,8 +1,6 @@
 package repository;
 
-import controller.business.MovieController;
 import controller.business.RoomController;
-import models.Movie;
 import models.Room;
 import models.Session;
 
@@ -39,7 +37,6 @@ public class SessionRepository {
      * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
      * Também repopula as filas de sessão das salas.
      */
-    @SuppressWarnings("unchecked")
     private void loadFromFile() {
         new File("data").mkdirs();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {

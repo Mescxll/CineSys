@@ -3,12 +3,8 @@ package controller.viewcontroller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import models.Movie;
 import models.Session;
 import javafx.fxml.Initializable;
 import java.net.URL;
@@ -27,10 +23,6 @@ import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableCell;
-import java.time.format.DateTimeParseException;
-import javafx.stage.Stage;
-import controller.viewcontroller.PopUpSessionController;
-import java.util.stream.Collectors;
 
 /**
  * Classe responsável por controlar a tela de alteração de um cliente.

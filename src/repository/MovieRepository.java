@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Classe que gerencia a coleção de filmes, com persistência em arquivo.
@@ -33,7 +32,6 @@ public class MovieRepository {
      * Carrega a lista de filmes de um arquivo binário.
      * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
      */
-    @SuppressWarnings("unchecked")
     private void loadFromFile() {
         new File("data").mkdirs();
 
