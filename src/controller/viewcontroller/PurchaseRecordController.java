@@ -1,23 +1,17 @@
 package controller.viewcontroller;
 
-import com.sun.tools.javac.Main;
 import controller.business.SaleController;
-import controller.business.TicketController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import models.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import controller.viewcontroller.PopUpTicketCanceledController;
 import java.util.List;
 
 

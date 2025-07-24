@@ -2,18 +2,13 @@ package controller.viewcontroller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import com.sun.tools.javac.Main;
-import controller.business.ClientController;
 import controller.business.MovieController;
 import controller.business.RoomController;
 import controller.business.SessionController;
-import controller.viewcontroller.SessionControlController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import models.Movie;
 
 /**
  * Classe responsável por controlar a tela de cadastro de uma sessão.

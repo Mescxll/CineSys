@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.stage.Stage;
 import models.Movie;
 import javafx.fxml.Initializable;
@@ -25,7 +24,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.control.CheckBox; 
 import javafx.scene.control.TableCell;
-import java.util.LinkedList;
 
 /**
  * Classe responsável por controlar a tela de Filmes.

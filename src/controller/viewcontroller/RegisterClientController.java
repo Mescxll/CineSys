@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import models.Movie;
 
 /**
  * Classe referente ao controle da interface "Registrar Clientes" presente na

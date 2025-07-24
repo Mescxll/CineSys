@@ -2,7 +2,6 @@ package controller.viewcontroller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 /**
  * Controlador da tela de erro por sala lotada (Oversold).

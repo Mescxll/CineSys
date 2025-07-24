@@ -2,28 +2,17 @@ package controller.viewcontroller;
 
 import controller.business.ClientController;
 import controller.business.SaleController;
-import controller.business.SessionController;
-import controller.business.TicketController;
 import controller.viewcontroller.SellTicketController;
 import enums.PaymentMethod;
 import exceptions.*;
-import controller.viewcontroller.PopUpDiscountController;
-import controller.viewcontroller.OversoldController;
-import controller.viewcontroller.PopUpRegisteredSaleController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import models.Client;
 import models.Session;
-import models.Ticket;
-import services.*;
-
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Controlador da tela de venda de ingressos.
@@ -34,17 +23,9 @@ import java.util.List;
  * @version 1.0
  */
 public class SellTicketController {
-
-    // Componentes da interface gráfica (FXML)
-
     @FXML private TextField clientId;                     // Campo para digitar o ID do cliente
     @FXML private TextField paymentMethod;                // Campo para informar o método de pagamento
     private Session session;
-
-
-    private final ToggleGroup radioGroup = new ToggleGroup(); // Agrupando os radio buttons
-
-    private List<Session> sessions; // Lista das sessões carregadas para exibição
 
     /**
      * Método chamado automaticamente ao carregar a tela (FXML).

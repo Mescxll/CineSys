@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import controller.viewcontroller.MainViews;
 
 /**
  * Classe responsável pela exibição de mensagens de sucesso ou erro na tela de cadastro de clientes.

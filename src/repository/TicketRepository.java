@@ -1,10 +1,7 @@
 package repository;
 
 import controller.business.ClientController;
-import controller.business.SessionController;
-import enums.PaymentMethod;
 import models.Client;
-import models.Session;
 import models.Ticket;
 
 import java.io.*;
@@ -36,7 +33,6 @@ public class TicketRepository {
      * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
      * Também repopula o histórico de compras dos clientes.
      */
-    @SuppressWarnings("unchecked")
     private void loadFromFile() {
         new File("data").mkdirs();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {

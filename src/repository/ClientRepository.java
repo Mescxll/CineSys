@@ -31,7 +31,6 @@ public class ClientRepository {
      * Carrega a lista de clientes de um arquivo binário.
      * Se o arquivo não existir ou estiver vazio, inicia com uma lista nova.
      */
-    @SuppressWarnings("unchecked")
     private void loadFromFile() {
         new File("data").mkdirs();
 

@@ -3,19 +3,11 @@ package controller.viewcontroller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import models.Movie;
 import javafx.event.ActionEvent;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import controller.business.MovieController;
-
 
 /**
  * Classe responsável por controlar a tela de cadastro de um filme.

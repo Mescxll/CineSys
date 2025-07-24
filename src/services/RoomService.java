@@ -3,8 +3,6 @@ package services;
 import models.Room;
 import models.Session;
 import repository.RoomRepository;
-import java.util.List;
-
 import java.util.LinkedList;
 
 /**
