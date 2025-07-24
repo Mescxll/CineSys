@@ -98,12 +98,12 @@ public class Room implements Serializable {
         ensureSessionsListExists();
 
         for (int i = 0; i < this.sessions.size(); i++) {
-            if (this.sessions.get(i).getId() == newSession.getId()) {
-                this.sessions.set(i, newSession);
+            if (this.sessions.get(i).getId() == session.getId()) {
+                this.sessions.set(i, session);
                 return;
             }
         }
-        this.sessions.add(newSession);
+        this.sessions.add(session);
     }
 
     /**
