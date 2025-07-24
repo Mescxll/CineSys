@@ -1,9 +1,11 @@
 package controller.viewcontroller;
 
 import controller.business.ClientController;
+import controller.business.SaleController;
 import controller.business.SessionController;
 import controller.business.TicketController;
 import controller.viewcontroller.SellTicketController;
+import enums.PaymentMethod;
 import exceptions.*;
 import controller.viewcontroller.PopUpDiscountController;
 import controller.viewcontroller.OversoldController;
@@ -70,7 +72,7 @@ public class SellTicketController {
         try {
             int clientID = Integer.parseInt(clientId.getText());
             String paymentStr = paymentMethod.getText();
-            Ticket ticket = TicketController.purchaseTicket(clientID, session.getId(), paymentStr);
+            SaleController.processSale(ClientController.getClientById(clientID), session, 1, PaymentMethod.valueOf(paymentStr));
 
             // Mostra o desconto aplicado
             double discount = ClientController.calculateDiscount(clientID);
@@ -85,6 +87,8 @@ public class SellTicketController {
             MainViews.changeScreen("oversold", null);
         } catch (PaymentInvalidException e) {
             showAlert("Erro ao processar o pagamento: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
