@@ -94,7 +94,7 @@ public class Room implements Serializable {
      * @param session a sessão a ser adicionada à sala
      * @throws Exception se ocorrer erro ao adicionar a sessão na fila
      */
-    public void addSession(Session newSession) {
+    public void addSession(Session session) throws Exception{
         ensureSessionsListExists();
 
         for (int i = 0; i < this.sessions.size(); i++) {
